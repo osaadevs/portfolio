@@ -191,17 +191,31 @@ export function Tag({ children, muted = false }: { children: ReactNode; muted?: 
   );
 }
 
-export function StatusBadge({ children }: { children: ReactNode }) {
+// `compact` shrinks it for use inside cards; `reveal` (default) opts into the
+// fadeUp stagger used in the hero — pass reveal={false} outside a stagger
+// container so it renders immediately instead of waiting for a "show" label.
+export function StatusBadge({
+  children,
+  compact = false,
+  reveal = true,
+}: {
+  children: ReactNode;
+  compact?: boolean;
+  reveal?: boolean;
+}) {
+  const dot = compact ? "h-2 w-2" : "h-2.5 w-2.5";
   return (
     <motion.div
-      variants={fadeUp}
-      className="inline-flex items-center gap-2.5 rounded-full bg-bg-elevated py-2.5 pl-4 pr-5"
+      variants={reveal ? fadeUp : undefined}
+      className={`inline-flex max-w-full items-center rounded-full bg-bg-elevated ${
+        compact ? "gap-1.5 py-1.5 pl-2.5 pr-3" : "gap-2.5 py-2.5 pl-4 pr-5"
+      }`}
     >
-      <span className="relative flex h-2.5 w-2.5">
+      <span className={`relative flex ${dot}`}>
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75 motion-reduce:hidden" />
-        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent" />
+        <span className={`relative inline-flex rounded-full bg-accent ${dot}`} />
       </span>
-      <span className="text-sm text-text-secondary">{children}</span>
+      <span className={`text-text-secondary ${compact ? "text-xs" : "text-sm"}`}>{children}</span>
     </motion.div>
   );
 }

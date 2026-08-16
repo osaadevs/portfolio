@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import type { Project } from "../content";
 import { work } from "../content";
 import { Icon } from "./Icon";
 import { ProjectCard } from "./ProjectCard";
@@ -20,29 +21,39 @@ function ViewAllLink() {
 
 const grid = "mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3";
 
+function ProjectGrid({ projects }: { projects: Project[] }) {
+  return (
+    <Reveal className={grid} stagger={0.08}>
+      {projects.map((project) => (
+        <ProjectCard key={project.title} project={project} />
+      ))}
+    </Reveal>
+  );
+}
+
 export function Work() {
   return (
     <Section id="work">
+      {/* Creative */}
       <Reveal>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeader heading={work.creative.heading} intro={work.creative.intro} />
           <ViewAllLink />
         </div>
       </Reveal>
-      <Reveal className={grid} stagger={0.08}>
-        {work.creative.projects.map((project) => (
-          <ProjectCard key={project.title} project={project} />
-        ))}
-      </Reveal>
+      <ProjectGrid projects={work.creative.projects} />
 
+      {/* Product & Interface Design */}
+      <Reveal className="mt-16">
+        <SectionHeader heading={work.product.heading} intro={work.product.intro} />
+      </Reveal>
+      <ProjectGrid projects={work.product.projects} />
+
+      {/* Technical */}
       <Reveal className="mt-16">
         <SectionHeader heading={work.technical.heading} intro={work.technical.intro} />
       </Reveal>
-      <Reveal className={grid} stagger={0.08}>
-        {work.technical.projects.map((project) => (
-          <ProjectCard key={project.title} project={project} />
-        ))}
-      </Reveal>
+      <ProjectGrid projects={work.technical.projects} />
     </Section>
   );
 }

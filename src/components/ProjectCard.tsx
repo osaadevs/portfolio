@@ -3,7 +3,7 @@ import type { Project } from "../content";
 import { Icon } from "./Icon";
 import { TechIcon } from "./TechIcon";
 import { TAG_ICON_MAP } from "./techIconData";
-import { EASE } from "./ui";
+import { EASE, StatusBadge } from "./ui";
 import { useProjectModal } from "./ProjectModal";
 
 // Compact icon row — just the marks for tags that have one, so the card stays
@@ -60,6 +60,14 @@ export function ProjectCard({ project }: { project: Project }) {
       {/* Body */}
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-lg font-bold leading-snug text-text-primary">{project.title}</h3>
+
+        {project.award ? (
+          <div className="mt-3">
+            <StatusBadge compact reveal={false}>
+              {project.award}
+            </StatusBadge>
+          </div>
+        ) : null}
 
         <div className="mt-4 flex-1">
           <TechRow tags={project.tags} />

@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import { AnimatePresence, motion } from "framer-motion";
 import type { Project } from "../content";
 import { Icon } from "./Icon";
-import { EASE, Tag } from "./ui";
+import { EASE, StatusBadge, Tag } from "./ui";
 import { useSmoothScroll } from "./SmoothScroll";
 
 type Ctx = { openProject: (p: Project) => void };
@@ -117,6 +117,12 @@ function ModalPanel({ project, onClose }: { project: Project; onClose: () => voi
         <h2 id="project-modal-title" className="text-2xl font-bold text-text-primary sm:text-3xl">
           {project.title}
         </h2>
+
+        {project.award ? (
+          <div className="mt-4">
+            <StatusBadge reveal={false}>{project.award}</StatusBadge>
+          </div>
+        ) : null}
 
         {/* Role — highlighted */}
         <div className="mt-4 flex items-center gap-2">

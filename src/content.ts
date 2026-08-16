@@ -72,12 +72,13 @@ export type Project = {
   liveLink?: ProjectLink;
   repoHref?: string;
   showRepoLink: boolean;
+  award?: string;
 };
 
 export const work = {
   creative: {
     heading: "Creative **work**",
-    intro: "Brand identity, campaign visuals and photography for real clients and events.",
+    intro: "Brand identity, campaign visuals and photography for clients and events.",
     projects: [
       {
         kind: "BRANDING",
@@ -87,17 +88,6 @@ export const work = {
         tags: ["Photoshop"],
         contribution: "Solo designer",
         liveLink: { label: "View on Facebook", href: "https://www.facebook.com/Inspirebuildingservices/" },
-        showRepoLink: false,
-      },
-      {
-        kind: "WEB BUILD",
-        title: "Leisure Land Website",
-        description:
-          "A full redesign of the website for a nature inspired villa. I rebuilt it from scratch, working through the layout, the visual direction and the front end build.",
-        tags: ["Stack TBC"],
-        tagsUnconfirmed: true,
-        contribution: "Solo, design and build",
-        liveLink: { label: "View live", href: "https://leisureland.lk" },
         showRepoLink: false,
       },
       {
@@ -116,6 +106,37 @@ export const work = {
           "Visual identity for both hackX 11.0 and hackX Jr 9.0. I led the design team and set the theme colours, typography and key visuals that ran across the whole marketing campaign for both events.",
         tags: ["Illustrator", "Photoshop"],
         contribution: "Lead designer, led the main design team",
+        showRepoLink: false,
+      },
+    ] as Project[],
+  },
+  product: {
+    heading: "Product & Interface **Design**",
+    intro: "Interface design and product thinking, from research through to prototype.",
+    projects: [
+      {
+        kind: "UI/UX & PRODUCT DESIGN",
+        title: "Pixora — Digital Maternal & Child Health Records",
+        description:
+          "A UI/UX concept for digitising Sri Lanka's maternal and child health records. Right now the Pink Card and the CHDR book are the only link between home and clinic, so if a mother loses the book her medical history goes with it. We designed an app that keeps the record in the cloud, turns growth data into simple colour signals instead of charts that are hard to read, and gives midwives one place to enter data instead of copying it into paper registers by hand.",
+        tags: ["Figma", "User Research", "Personas", "Journey Mapping", "Prototyping"],
+        contribution: "UI Designing",
+        award: "CryptX 2.0 Designathon — First Runners Up, 2026",
+        liveLink: {
+          label: "View prototype",
+          href: "https://www.figma.com/design/0zXudwQvJKGaOwwXKBODic/Duplicate-for-prototype?node-id=0-1",
+        },
+        showRepoLink: false,
+      },
+      {
+        kind: "WEB BUILD",
+        title: "Leisure Land Website",
+        description:
+          "A full redesign of the website for a nature inspired villa. I rebuilt it from scratch, working through the layout, the visual direction and the front end build.",
+        tags: ["Stack TBC"],
+        tagsUnconfirmed: true,
+        contribution: "Solo, design and build",
+        liveLink: { label: "View live", href: "https://leisureland.lk" },
         showRepoLink: false,
       },
     ] as Project[],
@@ -176,19 +197,20 @@ export type TimelineItem = {
 };
 
 // Flattened list for the dedicated /projects page, tagged by group for the
-// filter. Order: creative first, then technical (matches the home sections).
-export type GroupedProject = Project & { group: "Creative" | "Technical" };
+// filter. Order matches the home subsections: creative, product, technical.
+export type GroupedProject = Project & { group: "Creative" | "Product" | "Technical" };
 
 export const allProjects: GroupedProject[] = [
   ...work.creative.projects.map((p) => ({ ...p, group: "Creative" as const })),
+  ...work.product.projects.map((p) => ({ ...p, group: "Product" as const })),
   ...work.technical.projects.map((p) => ({ ...p, group: "Technical" as const })),
 ];
 
 export const projectsPage = {
   eyebrow: "WORK",
   heading: "All **projects**",
-  intro: "Creative and technical work in one place. Filter by type below.",
-  filters: ["All", "Creative", "Technical"] as const,
+  intro: "Creative, product and technical work in one place. Filter by type below.",
+  filters: ["All", "Creative", "Product", "Technical"] as const,
 };
 
 export const experienceEducation = {
