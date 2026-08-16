@@ -5,9 +5,9 @@ export function Footer() {
   return (
     <footer className="bg-bg-surface py-8">
       <Container className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
-        <div>
-          <p className="text-base font-medium text-text-primary">{footer.name}</p>
-          <p className="mt-1 text-sm text-text-muted">{footer.copyright}</p>
+        <div className="flex flex-col items-center gap-2 md:items-start">
+          <img src="/signature.png" alt={footer.name} className="h-7 w-auto" />
+          <p className="text-sm text-text-muted">{footer.copyright}</p>
         </div>
 
         <ul className="flex flex-wrap items-center justify-center gap-5">

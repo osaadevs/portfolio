@@ -1,6 +1,9 @@
+import { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { hero } from "../content";
 import { Button, Container, EASE, StatusBadge, fadeUp, staggerContainer } from "./ui";
+
+const HeroScene = lazy(() => import("./HeroScene").then((m) => ({ default: m.HeroScene })));
 
 function SplitLine({ text }: { text: string }) {
   const parts = text.split(/\*\*(.+?)\*\*/g);
@@ -33,6 +36,12 @@ function HeroAura() {
   );
 }
 
+// Soft static glow shown while the 3D chunk (react-three-fiber + three) is
+// still downloading/hydrating, so the hero never shows an empty gap.
+function ScenePlaceholder() {
+  return <div className="h-full w-full animate-pulse rounded-full bg-accent/10 blur-2xl" />;
+}
+
 export function Hero() {
   return (
     <section
@@ -45,7 +54,7 @@ export function Hero() {
           variants={staggerContainer(0.08)}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_auto]"
+          className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.15fr_1fr]"
         >
           <div>
             <StatusBadge>{hero.badge}</StatusBadge>
@@ -75,21 +84,16 @@ export function Hero() {
             </motion.div>
           </div>
 
-          <motion.div
-            variants={fadeUp}
-            className="flex flex-row items-center gap-4 lg:flex-col lg:items-end lg:text-right"
-          >
-            {/* Placeholder headshot — swap for the real export: <img src="/headshot.webp" alt={hero.name} ... /> */}
-            <div
-              role="img"
-              aria-label={`${hero.name} — headshot pending`}
-              className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full border border-border bg-bg-elevated text-center text-[11px] leading-tight text-text-muted"
-            >
-              Photo
-              <br />
-              pending
+          {/* Interactive 3D artifact — replaces the headshot placeholder.
+              Floats free (no card frame) so it reads as an object in the
+              scene rather than boxed content; follows the pointer subtly. */}
+          <motion.div variants={fadeUp} className="flex flex-col items-center gap-3 lg:items-end">
+            <div className="h-[280px] w-full max-w-[380px] cursor-grab active:cursor-grabbing sm:h-[340px] md:h-[400px]">
+              <Suspense fallback={<ScenePlaceholder />}>
+                <HeroScene />
+              </Suspense>
             </div>
-            <div>
+            <div className="text-center lg:text-right">
               <p className="text-lg font-semibold text-text-primary">{hero.name}</p>
               <p className="text-sm text-text-secondary">{hero.title}</p>
             </div>

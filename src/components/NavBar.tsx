@@ -41,8 +41,8 @@ export function NavBar() {
       className="sticky top-0 z-20 flex justify-center px-4 pt-6"
     >
       <nav className="flex items-center gap-6 rounded-full border border-border bg-bg-base/70 px-3 py-2 pl-6 backdrop-blur-md md:gap-8">
-        <a href="#hero" className="whitespace-nowrap text-[17px] italic tracking-[-0.2px] text-text-primary">
-          {nav.logotype}
+        <a href="#hero" aria-label={nav.logotype} className="shrink-0">
+          <img src="/signature.png" alt={nav.logotype} className="h-8 w-auto sm:h-9" />
         </a>
         <ul className="hidden items-center gap-6 md:flex">
           {nav.links.map((link) => {
