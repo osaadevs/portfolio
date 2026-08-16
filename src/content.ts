@@ -88,7 +88,7 @@ export const work = {
     projects: [
       {
         kind: "BRANDING",
-        title: "Inspire by IPE",
+        title: "Inspire by IPE — Social Media Branding",
         description:
           "Social media design for an electrical engineering and building services company. I handled the visual direction and produced the post designs, keeping the look consistent across every campaign.",
         tags: ["Photoshop"],
@@ -125,7 +125,7 @@ export const work = {
     projects: [
       {
         kind: "UI/UX & PRODUCT DESIGN",
-        title: "Pixora — Digital Maternal & Child Health Records",
+        title: "Digital Maternal & Child Health Records",
         description:
           "A UI/UX concept for digitising Sri Lanka's maternal and child health records. Right now the Pink Card and the CHDR book are the only link between home and clinic, so if a mother loses the book her medical history goes with it. We designed an app that keeps the record in the cloud, turns growth data into simple colour signals instead of charts that are hard to read, and gives midwives one place to enter data instead of copying it into paper registers by hand.",
         tags: ["Figma", "User Research", "Personas", "Journey Mapping", "Prototyping"],
@@ -158,7 +158,7 @@ export const work = {
     projects: [
       {
         kind: "FULL STACK",
-        title: "Taskora",
+        title: "Taskora — Task Management System",
         description:
           "A real time task management app, somewhere close to a lightweight Jira or Trello. Built as a group project for a software engineering module. Users can create, assign and track tasks, and changes show up live for everyone through Socket.IO. It also handles project manager roles, collaborators and notifications.",
         tags: ["React", "Vite", "Node.js", "Express", "PostgreSQL", "Supabase", "Prisma", "Socket.IO", "Render"],
