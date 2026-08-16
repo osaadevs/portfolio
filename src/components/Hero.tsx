@@ -1,34 +1,22 @@
 import { motion } from "framer-motion";
 import { hero } from "../content";
 import { Button, Container, EASE, StatusBadge, fadeUp, staggerContainer } from "./ui";
-import { HeroGraphic } from "./HeroGraphic";
+import { InteractiveHeadline } from "./InteractiveHeadline";
 
-function SplitLine({ text }: { text: string }) {
-  const parts = text.split(/\*\*(.+?)\*\*/g);
-  return (
-    <>
-      {parts.map((part, i) =>
-        i % 2 === 1 ? <span key={i}>{part}</span> : <span key={i} className="text-text-muted">{part}</span>,
-      )}
-    </>
-  );
-}
-
-// Ambient layer (motion-design "third layer"): a slow, low-opacity azure
-// aurora that drifts behind the hero. Purely decorative, hidden for
-// reduced-motion via MotionConfig stripping the animate transform.
+// Ambient layer: a slow, low-opacity azure aurora drifting behind the type.
+// Purely decorative; MotionConfig strips the transform for reduced-motion.
 function HeroAura() {
   return (
     <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{
-          opacity: 0.5,
-          x: [0, 40, -20, 0],
-          y: [0, -30, 20, 0],
+        animate={{ opacity: 0.45, x: [0, 40, -20, 0], y: [0, -30, 20, 0] }}
+        transition={{
+          opacity: { duration: 1.2 },
+          x: { duration: 22, repeat: Infinity, ease: "easeInOut" },
+          y: { duration: 26, repeat: Infinity, ease: "easeInOut" },
         }}
-        transition={{ opacity: { duration: 1.2 }, x: { duration: 22, repeat: Infinity, ease: "easeInOut" }, y: { duration: 26, repeat: Infinity, ease: "easeInOut" } }}
-        className="absolute -right-24 top-1/4 h-[520px] w-[520px] rounded-full bg-accent/20 blur-[140px]"
+        className="absolute -right-32 top-1/3 h-[560px] w-[560px] rounded-full bg-accent/20 blur-[150px]"
       />
     </div>
   );
@@ -42,31 +30,24 @@ export function Hero() {
     >
       <HeroAura />
       <Container>
-        <motion.div
-          variants={staggerContainer(0.08)}
-          initial="hidden"
-          animate="show"
-          className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.15fr_1fr]"
-        >
-          <div>
+        <motion.div variants={staggerContainer(0.08)} initial="hidden" animate="show">
+          <motion.div variants={fadeUp}>
             <StatusBadge>{hero.badge}</StatusBadge>
+          </motion.div>
 
-            <motion.h1
-              variants={fadeUp}
-              className="mt-6 max-w-3xl text-[44px] font-extrabold leading-[1.03] tracking-[-1.5px] text-text-primary sm:text-6xl md:text-[68px] md:leading-[1.02] md:tracking-[-2.5px]"
-            >
-              {hero.headlineLines.map((line, i) => (
-                <span key={i} className="block">
-                  <SplitLine text={line} />
-                </span>
-              ))}
-            </motion.h1>
+          {/* The headline is the hero — full width, no competing column. */}
+          <div className="mt-8">
+            <InteractiveHeadline lines={hero.headlineLines} />
+          </div>
 
-            <motion.p variants={fadeUp} className="mt-7 max-w-[460px] text-lg leading-[1.7] text-text-secondary">
+          {/* Supporting row sits under the type, split left/right so the
+              headline keeps the full width to itself. */}
+          <div className="mt-12 flex flex-col gap-8 border-t border-border pt-8 md:flex-row md:items-start md:justify-between">
+            <motion.p variants={fadeUp} className="max-w-[440px] text-lg leading-[1.7] text-text-secondary">
               {hero.subline}
             </motion.p>
 
-            <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-4">
+            <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 md:shrink-0">
               <Button href={hero.primaryCta.href} size="lg" glow>
                 {hero.primaryCta.label}
               </Button>
@@ -75,14 +56,6 @@ export function Hero() {
               </Button>
             </motion.div>
           </div>
-
-          {/* Fills the space that used to hold a headshot placeholder — a
-              circuit/constellation graphic that extends the site's own
-              grid-line language (see GridLines.tsx) instead of an unrelated
-              visual metaphor. Tilts gently toward the pointer. */}
-          <motion.div variants={fadeUp} className="flex justify-center lg:justify-end">
-            <HeroGraphic />
-          </motion.div>
         </motion.div>
 
         {/* Scroll cue */}
@@ -91,7 +64,7 @@ export function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          className="mt-16 inline-flex items-center gap-2 text-xs uppercase tracking-[2px] text-text-muted transition-colors hover:text-text-primary"
+          className="mt-14 inline-flex items-center gap-2 text-xs uppercase tracking-[2px] text-text-muted transition-colors hover:text-text-primary"
         >
           Scroll
           <motion.span
