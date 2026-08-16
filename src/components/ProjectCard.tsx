@@ -43,34 +43,36 @@ export function ProjectCard({ project }: { project: Project }) {
       animate="rest"
       className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-bg-surface text-left transition-colors duration-300 hover:border-accent/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
     >
-      {/* Media */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-bg-elevated">
-        <motion.div
-          variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
-          transition={{ duration: 0.5, ease: EASE }}
-          className="h-full w-full"
-        >
-          {project.image ? (
-            <img
-              src={project.image}
-              alt={`${project.title} preview`}
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <span className="px-4 text-center text-xs text-text-muted">{project.title}</span>
-            </div>
-          )}
-        </motion.div>
-        <span className="absolute left-3 top-3 rounded-full border border-border bg-bg-base/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[1px] text-accent backdrop-blur">
-          {project.kind}
-        </span>
+      {/* Media — framed separately with its own thin border, no overlay
+          badge on top (project images carry their own logos/text in that
+          corner, so a floating pill there just collided with them). */}
+      <div className="p-4 pb-0">
+        <div className="aspect-[16/10] overflow-hidden rounded-lg border border-border bg-bg-elevated">
+          <motion.div
+            variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
+            transition={{ duration: 0.5, ease: EASE }}
+            className="h-full w-full"
+          >
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={`${project.title} preview`}
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <span className="px-4 text-center text-xs text-text-muted">{project.title}</span>
+              </div>
+            )}
+          </motion.div>
+        </div>
       </div>
 
       {/* Body */}
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-lg font-bold leading-snug text-text-primary">{project.title}</h3>
+        <p className="text-xs font-semibold uppercase tracking-[1px] text-accent">{project.kind}</p>
+        <h3 className="mt-2 text-lg font-bold leading-snug text-text-primary">{project.title}</h3>
 
         {project.award ? (
           <div className="mt-3">

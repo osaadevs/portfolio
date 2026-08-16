@@ -115,6 +115,7 @@ export const work = {
         tags: ["Illustrator", "Photoshop"],
         contribution: "Lead designer, led the main design team",
         showRepoLink: false,
+        image: "/projects/hackx.jpg",
       },
     ] as Project[],
   },

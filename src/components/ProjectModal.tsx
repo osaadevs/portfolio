@@ -104,27 +104,29 @@ function ModalPanel({ project, onClose }: { project: Project; onClose: () => voi
         <CloseIcon />
       </button>
 
-      {/* Media */}
-      <div className="relative aspect-[16/9] overflow-hidden bg-bg-elevated">
-        {project.image ? (
-          <img
-            src={project.image}
-            alt={`${project.title} preview`}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <span className="px-6 text-center text-sm text-text-muted">{project.title}</span>
-          </div>
-        )}
-        <span className="absolute left-5 top-5 rounded-full border border-border bg-bg-base/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[1px] text-accent backdrop-blur">
-          {project.kind}
-        </span>
+      {/* Media — framed separately with its own thin border, no overlay
+          badge (project images carry their own logos/text, so a floating
+          pill collided with them). */}
+      <div className="p-6 pb-0 sm:p-8 sm:pb-0">
+        <div className="aspect-[16/9] overflow-hidden rounded-lg border border-border bg-bg-elevated">
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={`${project.title} preview`}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <span className="px-6 text-center text-sm text-text-muted">{project.title}</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Body */}
       <div className="p-6 sm:p-8">
-        <h2 id="project-modal-title" className="text-2xl font-bold text-text-primary sm:text-3xl">
+        <p className="text-xs font-semibold uppercase tracking-[1px] text-accent">{project.kind}</p>
+        <h2 id="project-modal-title" className="mt-2 text-2xl font-bold text-text-primary sm:text-3xl">
           {project.title}
         </h2>
 
