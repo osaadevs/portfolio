@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { motion, type Variants } from "framer-motion";
 import { Icon, type IconName } from "./Icon";
+import { TechIcon } from "./TechIcon";
+import { TAG_ICON_MAP } from "./techIconData";
 
 // ---- Layout ---------------------------------------------------------------
 
@@ -175,12 +177,15 @@ export function IconButton({ href, icon, label }: { href: string; icon: IconName
 // ---- Tag / Status Badge -------------------------------------------------
 
 export function Tag({ children, muted = false }: { children: ReactNode; muted?: boolean }) {
+  const label = typeof children === "string" ? children : null;
+  const hasIcon = label !== null && label in TAG_ICON_MAP;
   return (
     <span
-      className={`inline-flex items-center rounded-sm bg-bg-elevated px-3.5 py-2 text-sm ${
-        muted ? "text-text-muted italic" : "text-text-secondary"
-      }`}
+      className={`inline-flex items-center gap-1.5 rounded-sm bg-bg-elevated py-2 text-sm ${
+        hasIcon ? "pl-2.5 pr-3.5" : "px-3.5"
+      } ${muted ? "text-text-muted italic" : "text-text-secondary"}`}
     >
+      {label ? <TechIcon label={label} className="h-4 w-4 shrink-0" /> : null}
       {children}
     </span>
   );
