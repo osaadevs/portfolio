@@ -1,9 +1,7 @@
-import { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { hero } from "../content";
 import { Button, Container, EASE, StatusBadge, fadeUp, staggerContainer } from "./ui";
-
-const HeroScene = lazy(() => import("./HeroScene").then((m) => ({ default: m.HeroScene })));
+import { HeroGraphic } from "./HeroGraphic";
 
 function SplitLine({ text }: { text: string }) {
   const parts = text.split(/\*\*(.+?)\*\*/g);
@@ -34,12 +32,6 @@ function HeroAura() {
       />
     </div>
   );
-}
-
-// Soft static glow shown while the 3D chunk (react-three-fiber + three) is
-// still downloading/hydrating, so the hero never shows an empty gap.
-function ScenePlaceholder() {
-  return <div className="h-full w-full animate-pulse rounded-full bg-accent/10 blur-2xl" />;
 }
 
 export function Hero() {
@@ -84,19 +76,12 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Interactive 3D artifact — replaces the headshot placeholder.
-              Floats free (no card frame) so it reads as an object in the
-              scene rather than boxed content; follows the pointer subtly. */}
-          <motion.div variants={fadeUp} className="flex flex-col items-center gap-3 lg:items-end">
-            <div className="h-[280px] w-full max-w-[380px] cursor-grab active:cursor-grabbing sm:h-[340px] md:h-[400px]">
-              <Suspense fallback={<ScenePlaceholder />}>
-                <HeroScene />
-              </Suspense>
-            </div>
-            <div className="text-center lg:text-right">
-              <p className="text-lg font-semibold text-text-primary">{hero.name}</p>
-              <p className="text-sm text-text-secondary">{hero.title}</p>
-            </div>
+          {/* Fills the space that used to hold a headshot placeholder — a
+              circuit/constellation graphic that extends the site's own
+              grid-line language (see GridLines.tsx) instead of an unrelated
+              visual metaphor. Tilts gently toward the pointer. */}
+          <motion.div variants={fadeUp} className="flex justify-center lg:justify-end">
+            <HeroGraphic />
           </motion.div>
         </motion.div>
 
