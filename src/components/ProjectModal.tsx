@@ -105,8 +105,18 @@ function ModalPanel({ project, onClose }: { project: Project; onClose: () => voi
       </button>
 
       {/* Media */}
-      <div className="relative flex aspect-[16/9] items-center justify-center bg-bg-elevated">
-        <span className="px-6 text-center text-sm text-text-muted">{project.title}</span>
+      <div className="relative aspect-[16/9] overflow-hidden bg-bg-elevated">
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={`${project.title} preview`}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <span className="px-6 text-center text-sm text-text-muted">{project.title}</span>
+          </div>
+        )}
         <span className="absolute left-5 top-5 rounded-full border border-border bg-bg-base/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[1px] text-accent backdrop-blur">
           {project.kind}
         </span>

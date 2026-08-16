@@ -48,9 +48,20 @@ export function ProjectCard({ project }: { project: Project }) {
         <motion.div
           variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="flex h-full w-full items-center justify-center"
+          className="h-full w-full"
         >
-          <span className="px-4 text-center text-xs text-text-muted">{project.title}</span>
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={`${project.title} preview`}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <span className="px-4 text-center text-xs text-text-muted">{project.title}</span>
+            </div>
+          )}
         </motion.div>
         <span className="absolute left-3 top-3 rounded-full border border-border bg-bg-base/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[1px] text-accent backdrop-blur">
           {project.kind}

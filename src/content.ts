@@ -76,6 +76,9 @@ export type Project = {
   // Kept in the data (not deleted) so it's a one-line flip to bring back.
   // Filtered out in Work.tsx and the allProjects flattening below.
   hidden?: boolean;
+  // Path under /public. Falls back to the text placeholder when omitted
+  // (still true for hackX — no export provided yet).
+  image?: string;
 };
 
 export const work = {
@@ -92,6 +95,7 @@ export const work = {
         contribution: "Solo designer",
         liveLink: { label: "View on Facebook", href: "https://www.facebook.com/Inspirebuildingservices/" },
         showRepoLink: false,
+        image: "/projects/inspire-by-ipe.jpg",
       },
       {
         kind: "PHOTOGRAPHY & BRANDING",
@@ -101,6 +105,7 @@ export const work = {
         tags: ["Lightroom", "Photoshop", "Illustrator"],
         contribution: "Solo, photography and branding",
         showRepoLink: false,
+        image: "/projects/udara-antique.jpg",
       },
       {
         kind: "VISUAL IDENTITY",
@@ -130,6 +135,7 @@ export const work = {
           href: "https://www.figma.com/design/0zXudwQvJKGaOwwXKBODic/Duplicate-for-prototype?node-id=0-1",
         },
         showRepoLink: false,
+        image: "/projects/pixora.jpg",
       },
       {
         kind: "WEB BUILD",
@@ -141,6 +147,7 @@ export const work = {
         contribution: "Solo, design and build",
         liveLink: { label: "View live", href: "https://leisureland.lk" },
         showRepoLink: false,
+        image: "/projects/leisure-land.jpg",
       },
     ] as Project[],
   },
@@ -157,6 +164,7 @@ export const work = {
         contribution: "Group project",
         repoHref: "https://github.com/osaadevs/task-management-system",
         showRepoLink: true,
+        image: "/projects/taskora.jpg",
       },
       {
         kind: "JAVA / OOP",
@@ -167,6 +175,7 @@ export const work = {
         contribution: "Group project",
         repoHref: "https://github.com/osaadevs/OOP_Project",
         showRepoLink: true,
+        image: "/projects/pet-adoption-system.jpg",
       },
       {
         kind: "FRONT END",
@@ -188,6 +197,7 @@ export const work = {
         contribution: "Solo",
         repoHref: "https://github.com/osaadevs/snake-game",
         showRepoLink: true,
+        image: "/projects/snake-game.jpg",
       },
     ] as Project[],
   },
