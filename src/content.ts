@@ -2,12 +2,16 @@
 // the owner's own voice; do not rewrite it, do not add marketing language.
 // Structure/layout follows the Figma file; words come from the handoff doc.
 
+// Order matches the actual page flow (see Home() in App.tsx):
+// Hero -> About -> Skills -> Work -> Experience -> Certifications -> Contact.
 export const nav = {
   logotype: "Osanda Senevirathna",
   links: [
-    { label: "Work", href: "#work" },
     { label: "About", href: "#about" },
     { label: "Skills", href: "#skills" },
+    { label: "Work", href: "#work" },
+    { label: "Experience", href: "#experience" },
+    { label: "Certifications", href: "#certifications" },
     { label: "Contact", href: "#contact" },
   ],
   cta: "Get in touch",
@@ -333,9 +337,9 @@ export const footer = {
   name: "Osanda Senevirathna",
   copyright: "© 2026 Osanda Senevirathna",
   links: [
-    { label: "Work", href: "#work" },
     { label: "About", href: "#about" },
     { label: "Skills", href: "#skills" },
+    { label: "Work", href: "#work" },
     { label: "Contact", href: "#contact" },
   ],
   social: [

@@ -1,42 +1,47 @@
 import { motion } from "framer-motion";
 import type { Project } from "../content";
 import { Icon } from "./Icon";
-import { EASE, fadeUp } from "./ui";
+import { TechIcon } from "./TechIcon";
+import { TAG_ICON_MAP } from "./techIconData";
+import { EASE } from "./ui";
+import { useProjectModal } from "./ProjectModal";
 
-function ProjectLinkRow({ project }: { project: Project }) {
-  const links = [
-    ...(project.liveLink ? [{ label: project.liveLink.label, href: project.liveLink.href }] : []),
-    ...(project.showRepoLink && project.repoHref ? [{ label: "Repo", href: project.repoHref }] : []),
-  ];
-  if (links.length === 0) return null;
+// Compact icon row — just the marks for tags that have one, so the card stays
+// light and the full labelled stack lives in the modal.
+function TechRow({ tags }: { tags: string[] }) {
+  const withIcons = tags.filter((t) => t in TAG_ICON_MAP);
+  if (withIcons.length === 0) return null;
   return (
-    <div className="flex items-center gap-3">
-      {links.map((link) => (
-        <a
-          key={link.label}
-          href={link.href}
-          target="_blank"
-          rel="noreferrer"
-          className="group/link inline-flex items-center gap-1 text-accent transition-colors hover:text-text-primary"
+    <div className="flex items-center gap-2">
+      {withIcons.map((tag) => (
+        <span
+          key={tag}
+          className="flex h-7 w-7 items-center justify-center rounded-md border border-border bg-bg-elevated"
+          title={tag}
         >
-          {link.label}
-          <motion.span variants={{ rest: { x: 0 }, hover: { x: 3 } }} transition={{ duration: 0.25, ease: EASE }}>
-            <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
-          </motion.span>
-        </a>
+          <TechIcon label={tag} className="h-3.5 w-3.5" />
+        </span>
       ))}
     </div>
   );
 }
 
 export function ProjectCard({ project }: { project: Project }) {
+  const { openProject } = useProjectModal();
+
   return (
-    <motion.article
-      variants={fadeUp}
+    <motion.button
+      type="button"
+      onClick={() => openProject(project)}
+      aria-label={`View details for ${project.title}`}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
+      }}
       initial="rest"
       whileHover="hover"
       animate="rest"
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-bg-surface transition-colors duration-300 hover:border-accent/40"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-bg-surface text-left transition-colors duration-300 hover:border-accent/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
     >
       {/* Media */}
       <div className="relative aspect-[16/10] overflow-hidden bg-bg-elevated">
@@ -45,7 +50,6 @@ export function ProjectCard({ project }: { project: Project }) {
           transition={{ duration: 0.5, ease: EASE }}
           className="flex h-full w-full items-center justify-center"
         >
-          {/* Swap for a real <img> export later; alt = project.title */}
           <span className="px-4 text-center text-xs text-text-muted">{project.title}</span>
         </motion.div>
         <span className="absolute left-3 top-3 rounded-full border border-border bg-bg-base/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[1px] text-accent backdrop-blur">
@@ -56,21 +60,21 @@ export function ProjectCard({ project }: { project: Project }) {
       {/* Body */}
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-lg font-bold leading-snug text-text-primary">{project.title}</h3>
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-text-secondary">{project.description}</p>
 
-        <p
-          className={`mt-4 text-xs leading-relaxed ${
-            project.tagsUnconfirmed ? "italic text-text-muted" : "text-text-muted"
-          }`}
-        >
-          {project.tags.join("  ·  ")}
-        </p>
+        <div className="mt-4 flex-1">
+          <TechRow tags={project.tags} />
+        </div>
 
-        <div className="mt-4 flex items-center justify-between border-t border-border pt-3 text-xs">
+        <div className="mt-5 flex items-center justify-between border-t border-border pt-4 text-xs">
           <span className="text-text-muted">{project.contribution}</span>
-          <ProjectLinkRow project={project} />
+          <span className="inline-flex items-center gap-1 font-medium text-accent">
+            View details
+            <motion.span variants={{ rest: { x: 0 }, hover: { x: 3 } }} transition={{ duration: 0.25, ease: EASE }}>
+              <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
+            </motion.span>
+          </span>
         </div>
       </div>
-    </motion.article>
+    </motion.button>
   );
 }

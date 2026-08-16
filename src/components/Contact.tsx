@@ -16,14 +16,6 @@ export function Contact() {
               {contact.secondaryCta.label}
             </Button>
           </motion.div>
-
-          <motion.p variants={fadeUp} className="mt-8 flex items-center gap-2.5 text-sm text-text-muted">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75 motion-reduce:hidden" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-            </span>
-            Usually replies within a day
-          </motion.p>
         </Reveal>
 
         <motion.div

@@ -2,8 +2,8 @@ import { createContext, useCallback, useContext, useEffect, useRef, type ReactNo
 import { useLocation, useNavigate } from "react-router-dom";
 import Lenis from "lenis";
 
-type Ctx = { scrollToId: (id: string) => void };
-const SmoothCtx = createContext<Ctx>({ scrollToId: () => {} });
+type Ctx = { scrollToId: (id: string) => void; lockScroll: (locked: boolean) => void };
+const SmoothCtx = createContext<Ctx>({ scrollToId: () => {}, lockScroll: () => {} });
 export const useSmoothScroll = () => useContext(SmoothCtx);
 
 const NAV_OFFSET = -96; // clear the sticky nav pill
@@ -99,5 +99,16 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     [location.pathname, navigate, doScroll],
   );
 
-  return <SmoothCtx.Provider value={{ scrollToId }}>{children}</SmoothCtx.Provider>;
+  // Freeze background scrolling while an overlay (e.g. the project modal) is
+  // open. Lenis.stop() handles the smooth-scroll case; the overflow lock
+  // covers the reduced-motion path where Lenis isn't running.
+  const lockScroll = useCallback((locked: boolean) => {
+    if (lenisRef.current) {
+      if (locked) lenisRef.current.stop();
+      else lenisRef.current.start();
+    }
+    document.documentElement.style.overflow = locked ? "hidden" : "";
+  }, []);
+
+  return <SmoothCtx.Provider value={{ scrollToId, lockScroll }}>{children}</SmoothCtx.Provider>;
 }

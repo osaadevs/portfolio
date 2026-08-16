@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { nav } from "../content";
 import { Button } from "./ui";
 
@@ -46,22 +46,15 @@ export function NavBar() {
         </a>
         <ul className="hidden items-center gap-6 md:flex">
           {nav.links.map((link) => {
-            const isRoute = link.label === "Work";
-            const isActive = isRoute ? location.pathname === "/projects" : active === link.href.replace("#", "");
+            const isActive = active === link.href.replace("#", "");
             const cls = `text-[15px] font-medium transition-colors ${
               isActive ? "text-accent" : "text-text-secondary hover:text-text-primary"
             }`;
             return (
               <li key={link.label} className="relative">
-                {isRoute ? (
-                  <Link to="/projects" className={cls}>
-                    {link.label}
-                  </Link>
-                ) : (
-                  <a href={link.href} className={cls}>
-                    {link.label}
-                  </a>
-                )}
+                <a href={link.href} className={cls}>
+                  {link.label}
+                </a>
                 {isActive ? (
                   <motion.span
                     layoutId="nav-underline"

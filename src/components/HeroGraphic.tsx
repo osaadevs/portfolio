@@ -1,124 +1,189 @@
-import { useMemo, useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { EASE } from "./ui";
+import { useEffect, useRef } from "react";
 
-const COLS = 7;
-const ROWS = 7;
-const SIZE = 320;
-const GAP = SIZE / (COLS - 1);
+// Interactive particle constellation. Nodes drift slowly and link to nearby
+// neighbours; the cursor pulls a live web of accent-blue links toward it and
+// gently pushes nearby nodes aside, so the field feels alive and responsive
+// rather than a static decoration. Canvas 2D (no WebGL), pointer-driven,
+// and frozen to a single static frame under prefers-reduced-motion.
 
-// A handful of "active" nodes lit in accent blue, connected by a few lines —
-// reads as a circuit/constellation diagram rather than a literal 3D object,
-// extending the same grid-line language used across the rest of the site
-// (see GridLines.tsx) instead of borrowing an unrelated visual metaphor.
-const ACTIVE = [
-  [1, 1],
-  [4, 1],
-  [1, 4],
-  [5, 4],
-  [3, 6],
-  [4, 3],
-] as const;
+const NODE_COUNT = 46;
+const LINK_DIST = 108; // node-to-node link threshold (px)
+const MOUSE_DIST = 150; // cursor influence radius (px)
 
-const LINKS: [number, number][] = [
-  [0, 3],
-  [0, 4],
-  [1, 3],
-  [3, 4],
-  [3, 2],
-  [2, 4],
-];
+const COLORS = {
+  node: "rgba(120, 130, 145, 0.55)",
+  link: "90, 100, 115", // rgb, alpha applied per-link
+  accent: "31, 139, 255",
+};
 
-function pointFor([cx, cy]: readonly [number, number]) {
-  return { x: cx * GAP, y: cy * GAP };
-}
+type Node = { x: number; y: number; vx: number; vy: number };
 
 export function HeroGraphic() {
-  const ref = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 60, damping: 18 });
-  const sy = useSpring(my, { stiffness: 60, damping: 18 });
-  const rotateX = useTransform(sy, [-1, 1], [6, -6]);
-  const rotateY = useTransform(sx, [-1, 1], [-6, 6]);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const dots = useMemo(() => {
-    const out: { x: number; y: number; active: boolean; delay: number }[] = [];
-    for (let cy = 0; cy < ROWS; cy++) {
-      for (let cx = 0; cx < COLS; cx++) {
-        const active = ACTIVE.some(([ax, ay]) => ax === cx && ay === cy);
-        out.push({ x: cx * GAP, y: cy * GAP, active, delay: (cx + cy) * 0.03 });
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const wrap = wrapRef.current;
+    if (!canvas || !wrap) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    let w = 0;
+    let h = 0;
+    const nodes: Node[] = [];
+    const mouse = { x: -9999, y: -9999, active: false };
+
+    function seed() {
+      nodes.length = 0;
+      for (let i = 0; i < NODE_COUNT; i++) {
+        nodes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.28,
+          vy: (Math.random() - 0.5) * 0.28,
+        });
       }
     }
-    return out;
-  }, []);
 
-  function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    mx.set(((e.clientX - rect.left) / rect.width) * 2 - 1);
-    my.set(((e.clientY - rect.top) / rect.height) * 2 - 1);
-  }
-  function handlePointerLeave() {
-    mx.set(0);
-    my.set(0);
-  }
+    function resize() {
+      const rect = wrap!.getBoundingClientRect();
+      w = rect.width;
+      h = rect.height;
+      canvas!.width = w * dpr;
+      canvas!.height = h * dpr;
+      canvas!.style.width = `${w}px`;
+      canvas!.style.height = `${h}px`;
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (nodes.length === 0) seed();
+    }
+
+    function step() {
+      ctx!.clearRect(0, 0, w, h);
+
+      for (const n of nodes) {
+        if (!reduce) {
+          n.x += n.vx;
+          n.y += n.vy;
+          if (n.x < 0 || n.x > w) n.vx *= -1;
+          if (n.y < 0 || n.y > h) n.vy *= -1;
+
+          // Gentle push away from the cursor.
+          if (mouse.active) {
+            const dx = n.x - mouse.x;
+            const dy = n.y - mouse.y;
+            const d = Math.hypot(dx, dy);
+            if (d < MOUSE_DIST && d > 0.01) {
+              const force = (1 - d / MOUSE_DIST) * 0.6;
+              n.x += (dx / d) * force;
+              n.y += (dy / d) * force;
+            }
+          }
+        }
+      }
+
+      // Node-to-node links.
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < LINK_DIST) {
+            const alpha = (1 - d / LINK_DIST) * 0.5;
+            ctx!.strokeStyle = `rgba(${COLORS.link}, ${alpha})`;
+            ctx!.lineWidth = 1;
+            ctx!.beginPath();
+            ctx!.moveTo(a.x, a.y);
+            ctx!.lineTo(b.x, b.y);
+            ctx!.stroke();
+          }
+        }
+      }
+
+      // Cursor links + node highlight.
+      for (const n of nodes) {
+        let near = false;
+        if (mouse.active) {
+          const d = Math.hypot(n.x - mouse.x, n.y - mouse.y);
+          if (d < MOUSE_DIST) {
+            near = true;
+            const alpha = (1 - d / MOUSE_DIST) * 0.9;
+            ctx!.strokeStyle = `rgba(${COLORS.accent}, ${alpha})`;
+            ctx!.lineWidth = 1;
+            ctx!.beginPath();
+            ctx!.moveTo(n.x, n.y);
+            ctx!.lineTo(mouse.x, mouse.y);
+            ctx!.stroke();
+          }
+        }
+        ctx!.beginPath();
+        ctx!.arc(n.x, n.y, near ? 2.6 : 1.8, 0, Math.PI * 2);
+        ctx!.fillStyle = near ? `rgba(${COLORS.accent}, 0.95)` : COLORS.node;
+        ctx!.fill();
+      }
+
+      // Cursor node.
+      if (mouse.active) {
+        ctx!.beginPath();
+        ctx!.arc(mouse.x, mouse.y, 3, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(${COLORS.accent}, 1)`;
+        ctx!.fill();
+      }
+    }
+
+    let raf = 0;
+    function loop() {
+      step();
+      raf = requestAnimationFrame(loop);
+    }
+
+    const ro = new ResizeObserver(resize);
+    ro.observe(wrap);
+    resize();
+
+    if (reduce) {
+      step(); // single static frame
+    } else {
+      raf = requestAnimationFrame(loop);
+    }
+
+    function onMove(e: PointerEvent) {
+      const rect = wrap!.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      mouse.active = true;
+    }
+    function onLeave() {
+      mouse.active = false;
+      mouse.x = -9999;
+      mouse.y = -9999;
+    }
+
+    wrap.addEventListener("pointermove", onMove);
+    wrap.addEventListener("pointerleave", onLeave);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      wrap.removeEventListener("pointermove", onMove);
+      wrap.removeEventListener("pointerleave", onLeave);
+    };
+  }, []);
 
   return (
     <div
-      ref={ref}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      style={{ perspective: 900 }}
-      className="relative flex h-[280px] w-full max-w-[380px] items-center justify-center sm:h-[340px] md:h-[400px]"
+      ref={wrapRef}
+      className="relative h-[300px] w-full max-w-[440px] touch-none sm:h-[360px] md:h-[420px]"
+      style={{
+        WebkitMaskImage: "radial-gradient(ellipse at center, black 55%, transparent 100%)",
+        maskImage: "radial-gradient(ellipse at center, black 55%, transparent 100%)",
+      }}
+      aria-hidden="true"
     >
-      <motion.div
-        style={{ rotateX, rotateY }}
-        className="relative aspect-square w-full max-w-[320px] rounded-2xl border border-border bg-bg-surface"
-      >
-        <svg viewBox={`-20 -20 ${SIZE + 40} ${SIZE + 40}`} className="h-full w-full overflow-visible p-8">
-          {LINKS.map(([a, b], i) => {
-            const p1 = pointFor(ACTIVE[a]);
-            const p2 = pointFor(ACTIVE[b]);
-            return (
-              <motion.line
-                key={i}
-                x1={p1.x}
-                y1={p1.y}
-                x2={p2.x}
-                y2={p2.y}
-                stroke="var(--color-accent)"
-                strokeWidth={1}
-                strokeOpacity={0.35}
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1.1, delay: 0.4 + i * 0.12, ease: EASE }}
-              />
-            );
-          })}
-
-          {dots.map((d, i) => (
-            <motion.circle
-              key={i}
-              cx={d.x}
-              cy={d.y}
-              r={d.active ? 4 : 2}
-              fill={d.active ? "var(--color-accent)" : "var(--color-border)"}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={
-                d.active
-                  ? { opacity: [0.5, 1, 0.5], scale: 1 }
-                  : { opacity: 1, scale: 1 }
-              }
-              transition={
-                d.active
-                  ? { opacity: { duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: d.delay }, scale: { duration: 0.4, delay: d.delay, ease: EASE } }
-                  : { duration: 0.4, delay: d.delay, ease: EASE }
-              }
-            />
-          ))}
-        </svg>
-      </motion.div>
+      <canvas ref={canvasRef} className="h-full w-full" />
     </div>
   );
 }
