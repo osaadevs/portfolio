@@ -10,13 +10,21 @@ import { Icon, type IconName } from "./Icon";
 // resizes: sm insets the lines 40px -> content pads 80px; lg insets 80px ->
 // content pads 120px (which also naturally caps content at 1200px inside the
 // 1440px canvas, matching the Figma content column).
+// Content column. Its horizontal padding is intentionally larger than the
+// GridLines inset (see GridLines.tsx) so text sits ~40px inside the vertical
+// guide lines. max-w matches the GridLines frame so both stay aligned.
 export function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto w-full px-6 sm:px-20 lg:px-[120px] ${className}`}>{children}</div>;
+  return (
+    <div className={`mx-auto w-full max-w-[1400px] px-6 sm:px-20 lg:px-[120px] ${className}`}>{children}</div>
+  );
 }
 
+// Full-bleed section: the border-b spans the whole viewport width so the
+// horizontal grid rule is continuous at every screen size, while the inner
+// Container keeps the content centred and aligned to the vertical guides.
 export function Section({ id, children, className = "" }: { id: string; children: ReactNode; className?: string }) {
   return (
-    <section id={id} className={`border-b border-border py-20 md:py-28 ${className}`}>
+    <section id={id} className={`border-b border-border py-16 md:py-24 ${className}`}>
       <Container>{children}</Container>
     </section>
   );
@@ -26,10 +34,14 @@ export function Section({ id, children, className = "" }: { id: string; children
 // MotionConfig at the App root (reducedMotion="user") already strips
 // transforms for prefers-reduced-motion users and falls back to opacity
 // only, so these variants don't need their own media-query branching.
+//
+// Signature easing = "Premium" personality from the motion-design skill:
+// standard material decelerate curve, no overshoot, 0.4-0.6s.
+export const EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
 };
 
 export const staggerContainer = (stagger = 0.08): Variants => ({
@@ -61,22 +73,20 @@ export function Reveal({
 
 // ---- Section Header (Eyebrow + split-weight Heading) ----------------------
 
-// Parses "A bit **about me**" into extralight/extrabold spans, matching the
-// Figma split-weight heading treatment.
+// Parses "A bit **about me**" into two spans. Both halves share the same
+// (bold) weight; only the colour changes — primary text, accent emphasis.
 export function SplitHeading({ text, as: As = "h2" }: { text: string; as?: "h1" | "h2" }) {
   const parts = text.split(/\*\*(.+?)\*\*/g);
   const Tag = As;
   return (
-    <Tag className="max-w-2xl text-4xl leading-[1.15] tracking-[-1.6px] text-text-primary md:text-[46px] md:leading-[54px]">
+    <Tag className="max-w-2xl text-[30px] font-extrabold leading-[1.1] tracking-[-1px] text-text-primary md:text-[38px]">
       {parts.map((part, i) =>
         i % 2 === 1 ? (
-          <span key={i} className="font-extrabold text-accent">
+          <span key={i} className="text-accent">
             {part}
           </span>
         ) : (
-          <span key={i} className="font-extralight">
-            {part}
-          </span>
+          <span key={i}>{part}</span>
         ),
       )}
     </Tag>
@@ -247,30 +257,8 @@ export function CertCard({
   );
 }
 
-// ---- Timeline Entry -------------------------------------------------------
-
-export function TimelineEntry({
-  period,
-  role,
-  org,
-  note,
-}: {
-  period: string;
-  role: string;
-  org?: string;
-  note?: string;
-}) {
-  return (
-    <motion.li variants={fadeUp} className="border-l-2 border-border pl-6">
-      <p className="text-xs font-semibold tracking-[1px] text-text-muted">{period}</p>
-      <h4 className="mt-2 text-lg font-semibold text-text-primary">{role}</h4>
-      {org ? <p className="mt-1 text-sm text-accent">{org}</p> : null}
-      {note ? <p className="mt-3 text-[15px] leading-[1.6] text-text-secondary">{note}</p> : null}
-    </motion.li>
-  );
-}
-
 // ---- Contact Row ------------------------------------------------------
+// A full row that is itself the link target (bigger hit area, clearer hover).
 
 export function ContactRowItem({
   label,
@@ -283,21 +271,33 @@ export function ContactRowItem({
   href?: string;
   icon: IconName;
 }) {
-  return (
-    <motion.div variants={fadeUp} className="flex items-center gap-4 py-5">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-bg-elevated text-text-muted">
+  const inner = (
+    <>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-bg-elevated text-text-secondary transition-colors group-hover:border-accent/50 group-hover:text-accent">
         <Icon name={icon} className="h-4 w-4" />
       </span>
-      <span className="w-24 shrink-0 text-sm text-text-muted">{label}</span>
+      <span className="flex min-w-0 flex-col">
+        <span className="text-xs uppercase tracking-[1px] text-text-muted">{label}</span>
+        <span className="truncate text-[15px] text-text-primary">{value}</span>
+      </span>
       {href ? (
-        <a
-          href={href}
-          className="ml-auto truncate text-base text-text-primary transition-colors hover:text-accent"
-        >
-          {value}
+        <span className="ml-auto shrink-0 text-text-muted transition-all group-hover:translate-x-0.5 group-hover:text-accent">
+          <Icon name="arrow-up-right" className="h-4 w-4" />
+        </span>
+      ) : null}
+    </>
+  );
+
+  const shell = "group flex items-center gap-4 rounded-xl border border-border bg-bg-surface px-5 py-4 transition-colors hover:border-accent/40";
+
+  return (
+    <motion.div variants={fadeUp}>
+      {href ? (
+        <a href={href} className={shell} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+          {inner}
         </a>
       ) : (
-        <span className="ml-auto truncate text-base text-text-primary">{value}</span>
+        <div className={shell}>{inner}</div>
       )}
     </motion.div>
   );

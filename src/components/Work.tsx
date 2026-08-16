@@ -1,23 +1,44 @@
+import { Link } from "react-router-dom";
 import { work } from "../content";
+import { Icon } from "./Icon";
 import { ProjectCard } from "./ProjectCard";
 import { Reveal, Section, SectionHeader } from "./ui";
+
+function ViewAllLink() {
+  return (
+    <Link
+      to="/projects"
+      className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-border bg-bg-surface px-5 py-2.5 text-sm font-medium text-text-primary transition-colors hover:border-accent/50 hover:text-accent"
+    >
+      View all projects
+      <span className="transition-transform group-hover:translate-x-0.5">
+        <Icon name="arrow-up-right" className="h-4 w-4" />
+      </span>
+    </Link>
+  );
+}
+
+const grid = "mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3";
 
 export function Work() {
   return (
     <Section id="work">
       <Reveal>
-        <SectionHeader heading={work.creative.heading} intro={work.creative.intro} />
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeader heading={work.creative.heading} intro={work.creative.intro} />
+          <ViewAllLink />
+        </div>
       </Reveal>
-      <Reveal className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2" stagger={0.08}>
+      <Reveal className={grid} stagger={0.08}>
         {work.creative.projects.map((project) => (
           <ProjectCard key={project.title} project={project} />
         ))}
       </Reveal>
 
-      <Reveal className="mt-20">
+      <Reveal className="mt-16">
         <SectionHeader heading={work.technical.heading} intro={work.technical.intro} />
       </Reveal>
-      <Reveal className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2" stagger={0.08}>
+      <Reveal className={grid} stagger={0.08}>
         {work.technical.projects.map((project) => (
           <ProjectCard key={project.title} project={project} />
         ))}

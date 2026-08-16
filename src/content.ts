@@ -171,6 +171,22 @@ export type TimelineItem = {
   note?: string;
 };
 
+// Flattened list for the dedicated /projects page, tagged by group for the
+// filter. Order: creative first, then technical (matches the home sections).
+export type GroupedProject = Project & { group: "Creative" | "Technical" };
+
+export const allProjects: GroupedProject[] = [
+  ...work.creative.projects.map((p) => ({ ...p, group: "Creative" as const })),
+  ...work.technical.projects.map((p) => ({ ...p, group: "Technical" as const })),
+];
+
+export const projectsPage = {
+  eyebrow: "WORK",
+  heading: "All **projects**",
+  intro: "Creative and technical work in one place. Filter by type below.",
+  filters: ["All", "Creative", "Technical"] as const,
+};
+
 export const experienceEducation = {
   eyebrow: "EXPERIENCE & EDUCATION",
   experience: {

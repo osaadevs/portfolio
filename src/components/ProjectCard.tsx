@@ -1,7 +1,33 @@
 import { motion } from "framer-motion";
 import type { Project } from "../content";
 import { Icon } from "./Icon";
-import { Tag, fadeUp } from "./ui";
+import { EASE, fadeUp } from "./ui";
+
+function ProjectLinkRow({ project }: { project: Project }) {
+  const links = [
+    ...(project.liveLink ? [{ label: project.liveLink.label, href: project.liveLink.href }] : []),
+    ...(project.showRepoLink && project.repoHref ? [{ label: "Repo", href: project.repoHref }] : []),
+  ];
+  if (links.length === 0) return null;
+  return (
+    <div className="flex items-center gap-3">
+      {links.map((link) => (
+        <a
+          key={link.label}
+          href={link.href}
+          target="_blank"
+          rel="noreferrer"
+          className="group/link inline-flex items-center gap-1 text-accent transition-colors hover:text-text-primary"
+        >
+          {link.label}
+          <motion.span variants={{ rest: { x: 0 }, hover: { x: 3 } }} transition={{ duration: 0.25, ease: EASE }}>
+            <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
+          </motion.span>
+        </a>
+      ))}
+    </div>
+  );
+}
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
@@ -9,61 +35,40 @@ export function ProjectCard({ project }: { project: Project }) {
       variants={fadeUp}
       initial="rest"
       whileHover="hover"
-      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-bg-surface transition-colors duration-300 hover:border-accent/40"
+      animate="rest"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-bg-surface transition-colors duration-300 hover:border-accent/40"
     >
-      <div className="m-5 mb-0 h-[200px] overflow-hidden rounded-lg bg-bg-elevated">
+      {/* Media */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-bg-elevated">
         <motion.div
-          variants={{ rest: { scale: 1 }, hover: { scale: 1.03 } }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
+          transition={{ duration: 0.5, ease: EASE }}
           className="flex h-full w-full items-center justify-center"
         >
-          <span className="px-4 text-center text-sm text-text-muted">{project.title} — image pending</span>
+          {/* Swap for a real <img> export later; alt = project.title */}
+          <span className="px-4 text-center text-xs text-text-muted">{project.title}</span>
         </motion.div>
+        <span className="absolute left-3 top-3 rounded-full border border-border bg-bg-base/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[1px] text-accent backdrop-blur">
+          {project.kind}
+        </span>
       </div>
 
+      {/* Body */}
       <div className="flex flex-1 flex-col p-5">
-        <p className="text-xs font-semibold tracking-[1px] text-accent">{project.kind}</p>
-        <h3 className="mt-3 text-2xl font-bold text-text-primary">{project.title}</h3>
-        <p className="mt-3 flex-1 text-[15px] leading-[1.6] text-text-secondary">{project.description}</p>
+        <h3 className="text-lg font-bold leading-snug text-text-primary">{project.title}</h3>
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-text-secondary">{project.description}</p>
 
-        <div className="mt-5 flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <Tag key={tag} muted={project.tagsUnconfirmed}>
-              {tag}
-            </Tag>
-          ))}
-        </div>
+        <p
+          className={`mt-4 text-xs leading-relaxed ${
+            project.tagsUnconfirmed ? "italic text-text-muted" : "text-text-muted"
+          }`}
+        >
+          {project.tags.join("  ·  ")}
+        </p>
 
-        <div className="mt-6 flex items-center justify-between border-t border-border pt-4 text-sm">
+        <div className="mt-4 flex items-center justify-between border-t border-border pt-3 text-xs">
           <span className="text-text-muted">{project.contribution}</span>
-          <div className="flex gap-4">
-            {project.liveLink ? (
-              <a
-                href={project.liveLink.href}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-accent hover:text-text-primary"
-              >
-                {project.liveLink.label}
-                <motion.span variants={{ rest: { x: 0 }, hover: { x: 4 } }} transition={{ duration: 0.2 }}>
-                  <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
-                </motion.span>
-              </a>
-            ) : null}
-            {project.showRepoLink && project.repoHref ? (
-              <a
-                href={project.repoHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-accent hover:text-text-primary"
-              >
-                Repo
-                <motion.span variants={{ rest: { x: 0 }, hover: { x: 4 } }} transition={{ duration: 0.2 }}>
-                  <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
-                </motion.span>
-              </a>
-            ) : null}
-          </div>
+          <ProjectLinkRow project={project} />
         </div>
       </div>
     </motion.article>
