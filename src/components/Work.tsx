@@ -22,9 +22,10 @@ function ViewAllLink() {
 const grid = "mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3";
 
 function ProjectGrid({ projects }: { projects: Project[] }) {
+  const visible = projects.filter((p) => !p.hidden);
   return (
     <Reveal className={grid} stagger={0.08}>
-      {projects.map((project) => (
+      {visible.map((project) => (
         <ProjectCard key={project.title} project={project} />
       ))}
     </Reveal>

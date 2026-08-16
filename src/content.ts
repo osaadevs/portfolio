@@ -73,6 +73,9 @@ export type Project = {
   repoHref?: string;
   showRepoLink: boolean;
   award?: string;
+  // Kept in the data (not deleted) so it's a one-line flip to bring back.
+  // Filtered out in Work.tsx and the allProjects flattening below.
+  hidden?: boolean;
 };
 
 export const work = {
@@ -174,6 +177,7 @@ export const work = {
         contribution: "Solo",
         repoHref: "https://github.com/osaadevs/portfolio",
         showRepoLink: true,
+        hidden: true, // hidden for now — flip to false to bring it back
       },
       {
         kind: "C++ / FUNDAMENTALS",
@@ -204,7 +208,7 @@ export const allProjects: GroupedProject[] = [
   ...work.creative.projects.map((p) => ({ ...p, group: "Creative" as const })),
   ...work.product.projects.map((p) => ({ ...p, group: "Product" as const })),
   ...work.technical.projects.map((p) => ({ ...p, group: "Technical" as const })),
-];
+].filter((p) => !p.hidden);
 
 export const projectsPage = {
   eyebrow: "WORK",
