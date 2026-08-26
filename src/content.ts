@@ -20,7 +20,7 @@ export const nav = {
 export const hero = {
   badge: "Available for freelance projects",
   // Each line: plain text with the emphasised word(s) wrapped in **bold**.
-  headlineLines: ["Design with **Intent**,", "build with **Passion**."],
+  headlineLines: ["Design with **Intent**,", "build with **Precision**."],
   subline:
     "A designer who also writes code. Brand identity, UI/UX and photography on one side, React and full stack builds on the other.",
   name: "Osanda Senevirathna",

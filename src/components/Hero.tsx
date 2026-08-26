@@ -1,16 +1,46 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { hero } from "../content";
 import { Button, Container, EASE, StatusBadge, fadeUp, staggerContainer } from "./ui";
-import { HeroGraphic } from "./HeroGraphic";
+import { TypingKeyboard } from "./TypingKeyboard";
 
-function SplitLine({ text }: { text: string }) {
+// Bottom-up letters reveal: each glyph rises from a slight offset while
+// fading in, staggered per character, with a small extra delay between the
+// two headline lines so the cascade reads top to bottom.
+const letterEnter: Variants = {
+  hidden: { opacity: 0, y: 46 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.18, 1, 0.32, 1] } },
+};
+
+function AnimatedLine({ text }: { text: string }) {
   const parts = text.split(/\*\*(.+?)\*\*/g);
   return (
-    <>
-      {parts.map((part, i) =>
-        i % 2 === 1 ? <span key={i}>{part}</span> : <span key={i} className="text-text-muted">{part}</span>,
-      )}
-    </>
+    <motion.span variants={staggerContainer(0.022)} className="block">
+      {parts.map((part, i) => {
+        const bold = i % 2 === 1;
+        // Split into words vs. whitespace runs: letters within a word are
+        // wrapped in an atomic, non-breaking box so the reveal can't split
+        // a word mid-letter at narrow viewports, while the plain-text
+        // spaces between words stay normal line-wrap points.
+        const tokens = part.match(/\S+|\s+/g) ?? [];
+        return (
+          <span key={i} className={bold ? undefined : "text-text-muted"}>
+            {tokens.map((token, t) =>
+              /\s/.test(token) ? (
+                token
+              ) : (
+                <span key={t} className="inline-block whitespace-nowrap">
+                  {token.split("").map((char, j) => (
+                    <motion.span key={j} variants={letterEnter} className="inline-block">
+                      {char}
+                    </motion.span>
+                  ))}
+                </span>
+              ),
+            )}
+          </span>
+        );
+      })}
+    </motion.span>
   );
 }
 
@@ -52,13 +82,11 @@ export function Hero() {
             <StatusBadge>{hero.badge}</StatusBadge>
 
             <motion.h1
-              variants={fadeUp}
+              variants={staggerContainer(0.18)}
               className="mt-6 max-w-3xl text-[44px] font-extrabold leading-[1.03] tracking-[-1.5px] text-text-primary sm:text-6xl md:text-[68px] md:leading-[1.02] md:tracking-[-2.5px]"
             >
               {hero.headlineLines.map((line, i) => (
-                <span key={i} className="block">
-                  <SplitLine text={line} />
-                </span>
+                <AnimatedLine key={i} text={line} />
               ))}
             </motion.h1>
 
@@ -76,12 +104,10 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Fills the space that used to hold a headshot placeholder — a
-              circuit/constellation graphic that extends the site's own
-              grid-line language (see GridLines.tsx) instead of an unrelated
-              visual metaphor. Tilts gently toward the pointer. */}
           <motion.div variants={fadeUp} className="flex justify-center lg:justify-end">
-            <HeroGraphic />
+            <div className="h-[320px] w-full max-w-[600px] sm:h-[380px] md:h-[440px]" aria-hidden="true">
+              <TypingKeyboard scale={0.78} />
+            </div>
           </motion.div>
         </motion.div>
 
