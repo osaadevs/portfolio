@@ -58,3 +58,21 @@ button:focus-visible {
   outline-offset: 3px;
   border-radius: 2px;
 }
+
+@keyframes preloader-shutter-top {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+@keyframes preloader-shutter-bottom {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 100%, 0);
+  }
+}

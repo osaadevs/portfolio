@@ -8,6 +8,7 @@ import { Footer } from "./components/Footer";
 import { GridLines } from "./components/GridLines";
 import { Hero } from "./components/Hero";
 import { NavBar } from "./components/NavBar";
+import { Preloader } from "./components/Preloader";
 import { ProjectModalProvider } from "./components/ProjectModal";
 import { ProjectsPage } from "./components/ProjectsPage";
 import { SmoothScroll } from "./components/SmoothScroll";
@@ -33,6 +34,7 @@ function App() {
     <MotionConfig reducedMotion="user">
       <SmoothScroll>
         <ProjectModalProvider>
+          <Preloader />
           {/* Fixed grid frame behind everything */}
           <GridLines />
           {/* Content sits above the grid */}
