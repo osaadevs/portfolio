@@ -7,7 +7,7 @@ export function About() {
     <Section id="about">
       <Reveal className="grid gap-10 lg:grid-cols-2 lg:gap-16">
         <div>
-          <SectionHeader eyebrow={about.eyebrow} heading={about.heading} />
+          <SectionHeader heading={about.heading} />
           <motion.div variants={fadeUp} className="mt-10 hidden max-w-sm lg:block">
             <motion.div
               whileHover={{ rotate: -1, scale: 1.01 }}

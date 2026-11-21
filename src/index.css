@@ -1,32 +1,64 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Manrope", system-ui, sans-serif;
+/* Deep Signal: the chosen palette (navy-black ground, ice-cyan accent),
+   evolved from the LinkedIn cover gradient. */
+:root {
+  --p-bg: #070b14;
+  --p-surface: #0d1422;
+  --p-elevated: #131c2f;
+  --p-ink: #e8eef6;
+  --p-muted: #8b97ab;
+  --p-faint: #5d6a80;
+  --p-line: rgb(232 238 246 / 0.12);
+  --p-accent: #7fd8f0;
+  --p-accent-press: #5cc6e3;
+  --p-on-accent: #04121a;
+  --p-deep: #0b3f78;
+  --p-blue: #1f6feb;
+  color-scheme: dark;
+}
 
-  --color-bg-base: #141517;
-  --color-bg-surface: #1c1e21;
-  --color-bg-elevated: #232529;
-  --color-border: #2c2f34;
-  --color-text-primary: #f2f4f6;
-  --color-text-secondary: #9aa0a6;
-  --color-text-muted: #6b7076;
-  --color-accent: #1f8bff;
-  --color-accent-press: #0f6fd9;
-  --color-on-accent: #ffffff;
+@theme {
+  --font-sans: "Geist Variable", system-ui, sans-serif;
+  --font-display: "Zalando Sans Expanded Variable", "Geist Variable", system-ui, sans-serif;
+  --font-code: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --color-bg: var(--p-bg);
+  --color-surface: var(--p-surface);
+  --color-ink: var(--p-ink);
+  --color-muted: var(--p-muted);
+  --color-faint: var(--p-faint);
+  --color-line: var(--p-line);
+  --color-accent: var(--p-accent);
+  --color-accent-press: var(--p-accent-press);
+  --color-on-accent: var(--p-on-accent);
+  --color-elevated: var(--p-elevated);
+  --color-deep: var(--p-deep);
+
+  /* Legacy token names, mapped onto the palette so older components
+     (About, ProjectModal, /projects) follow the active palette. */
+  --color-bg-base: var(--p-bg);
+  --color-bg-surface: var(--p-surface);
+  --color-bg-elevated: var(--p-elevated);
+  --color-border: var(--p-line);
+  --color-text-primary: var(--p-ink);
+  --color-text-secondary: var(--p-muted);
+  --color-text-muted: var(--p-faint);
 
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-xl: 22px;
   --radius-full: 999px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
-  scroll-padding-top: 96px;
+  scroll-padding-top: 80px;
 }
 
-/* Lenis handles smooth scrolling in JS; keep native smooth as a fallback only
-   when Lenis is not driving (e.g. reduced-motion, where we disable Lenis). */
+/* Lenis */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -37,7 +69,6 @@ html.lenis body {
 .lenis.lenis-stopped {
   overflow: clip;
 }
-
 @media (prefers-reduced-motion: no-preference) {
   html:not(.lenis) {
     scroll-behavior: smooth;
@@ -45,34 +76,58 @@ html.lenis body {
 }
 
 body {
-  background: var(--color-bg-base);
-  color: var(--color-text-primary);
+  background: var(--p-bg);
+  color: var(--p-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition:
+    background-color 0.5s var(--ease-out-expo),
+    color 0.5s var(--ease-out-expo);
+}
+
+::selection {
+  background: var(--p-accent);
+  color: var(--p-on-accent);
 }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--p-accent);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
-@keyframes preloader-shutter-top {
-  from {
-    transform: translate3d(0, 0, 0);
+/* The nib cursor replaces the system pointer only on fine pointers.
+   Form fields keep their native caret. */
+@media (pointer: fine) {
+  html.has-nib-cursor,
+  html.has-nib-cursor a,
+  html.has-nib-cursor button {
+    cursor: none;
   }
-  to {
-    transform: translate3d(0, -100%, 0);
+  html.has-nib-cursor input,
+  html.has-nib-cursor textarea {
+    cursor: text;
   }
 }
 
-@keyframes preloader-shutter-bottom {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(0, 100%, 0);
-  }
+/* Film grain, fixed and non-interactive so it never repaints on scroll. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
+
+/* Zalando Sans Expanded: wide, calm, engineered. Headlines sit at 700 by
+   default; the hero drives --wght per letter for its pen-pressure effect. */
+.font-display {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+

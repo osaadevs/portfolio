@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import type { Project } from "../content";
 import { Icon } from "./Icon";
+import { MagicCard } from "./MagicCard";
 import { TechIcon } from "./TechIcon";
 import { TAG_ICON_MAP } from "./techIconData";
 import { EASE, StatusBadge } from "./ui";
+import { FocusBlurResolve } from "./FocusBlurResolve";
 import { useProjectModal } from "./ProjectModal";
 
 // Compact icon row — just the marks for tags that have one, so the card stays
@@ -41,61 +43,65 @@ export function ProjectCard({ project }: { project: Project }) {
       initial="rest"
       whileHover="hover"
       animate="rest"
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-bg-surface text-left transition-colors duration-300 hover:border-accent/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      className="block h-full rounded-xl text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
     >
-      {/* Media — framed separately with its own thin border, no overlay
-          badge on top (project images carry their own logos/text in that
-          corner, so a floating pill there just collided with them). */}
-      <div className="p-4 pb-0">
-        <div className="aspect-[16/10] overflow-hidden rounded-lg border border-border bg-bg-elevated">
-          <motion.div
-            variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
-            transition={{ duration: 0.5, ease: EASE }}
-            className="h-full w-full"
-          >
-            {project.image ? (
-              <img
-                src={project.image}
-                alt={`${project.title} preview`}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center">
-                <span className="px-4 text-center text-xs text-text-muted">{project.title}</span>
-              </div>
-            )}
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="flex flex-1 flex-col p-5">
-        <p className="text-xs font-semibold uppercase tracking-[1px] text-accent">{project.kind}</p>
-        <h3 className="mt-2 text-lg font-bold leading-snug text-text-primary">{project.title}</h3>
-
-        {project.award ? (
-          <div className="mt-3">
-            <StatusBadge compact reveal={false}>
-              {project.award}
-            </StatusBadge>
+      <MagicCard className="h-full rounded-xl">
+        {/* Media — framed separately with its own thin border, no overlay
+            badge on top (project images carry their own logos/text in that
+            corner, so a floating pill there just collided with them). */}
+        <div className="p-4 pb-0">
+          <div className="aspect-[16/10] overflow-hidden rounded-lg border border-border bg-bg-elevated">
+            <motion.div
+              variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="h-full w-full"
+            >
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt={`${project.title} preview`}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <span className="px-4 text-center text-xs text-text-muted">{project.title}</span>
+                </div>
+              )}
+            </motion.div>
           </div>
-        ) : null}
-
-        <div className="mt-4 flex-1">
-          <TechRow tags={project.tags} />
         </div>
 
-        <div className="mt-5 flex items-center justify-between border-t border-border pt-4 text-xs">
-          <span className="text-text-muted">{project.contribution}</span>
-          <span className="inline-flex items-center gap-1 font-medium text-accent">
-            View details
-            <motion.span variants={{ rest: { x: 0 }, hover: { x: 3 } }} transition={{ duration: 0.25, ease: EASE }}>
-              <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
-            </motion.span>
-          </span>
+        {/* Body */}
+        <div className="flex flex-1 flex-col p-5">
+          <p className="text-xs font-semibold uppercase tracking-[1px] text-accent">{project.kind}</p>
+          <h3 className="mt-2 text-lg font-bold leading-snug text-text-primary">
+            <FocusBlurResolve>{project.title}</FocusBlurResolve>
+          </h3>
+
+          {project.award ? (
+            <div className="mt-3">
+              <StatusBadge compact reveal={false}>
+                {project.award}
+              </StatusBadge>
+            </div>
+          ) : null}
+
+          <div className="mt-4 flex-1">
+            <TechRow tags={project.tags} />
+          </div>
+
+          <div className="mt-5 flex items-center justify-between border-t border-border pt-4 text-xs">
+            <span className="text-text-muted">{project.contribution}</span>
+            <span className="inline-flex items-center gap-1 font-medium text-accent">
+              View details
+              <motion.span variants={{ rest: { x: 0 }, hover: { x: 3 } }} transition={{ duration: 0.25, ease: EASE }}>
+                <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
+              </motion.span>
+            </span>
+          </div>
         </div>
-      </div>
+      </MagicCard>
     </motion.button>
   );
 }

@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { motion, type Variants } from "framer-motion";
+import { FocusBlurResolve } from "./FocusBlurResolve";
 import { Icon, type IconName } from "./Icon";
+import { MagicCard } from "./MagicCard";
 import { TechIcon } from "./TechIcon";
 import { TAG_ICON_MAP } from "./techIconData";
 
@@ -79,18 +81,21 @@ export function Reveal({
 // (bold) weight; only the colour changes — primary text, accent emphasis.
 export function SplitHeading({ text, as: As = "h2" }: { text: string; as?: "h1" | "h2" }) {
   const parts = text.split(/\*\*(.+?)\*\*/g);
+  const plain = text.replace(/\*\*(.+?)\*\*/g, "$1");
   const Tag = As;
   return (
     <Tag className="max-w-2xl text-[30px] font-extrabold leading-[1.1] tracking-[-1px] text-text-primary md:text-[38px]">
-      {parts.map((part, i) =>
-        i % 2 === 1 ? (
-          <span key={i} className="text-accent">
-            {part}
-          </span>
-        ) : (
-          <span key={i}>{part}</span>
-        ),
-      )}
+      <FocusBlurResolve label={plain}>
+        {parts.map((part, i) =>
+          i % 2 === 1 ? (
+            <span key={i} className="text-accent">
+              {part}
+            </span>
+          ) : (
+            <span key={i}>{part}</span>
+          ),
+        )}
+      </FocusBlurResolve>
     </Tag>
   );
 }
@@ -234,7 +239,9 @@ export function FactCard({ label, value }: { label: string; value: string }) {
 export function SkillCard({ title, tags }: { title: string; tags: string[] }) {
   return (
     <motion.div variants={fadeUp} className="rounded-lg border border-border bg-bg-surface p-7">
-      <h3 className="text-lg font-semibold text-text-primary">{title}</h3>
+      <h3 className="text-lg font-semibold text-text-primary">
+        <FocusBlurResolve>{title}</FocusBlurResolve>
+      </h3>
       <div className="mt-5 flex flex-wrap gap-2">
         {tags.map((tag) => (
           <Tag key={tag}>{tag}</Tag>
@@ -269,7 +276,7 @@ export function CertCard({
         ) : null}
       </div>
       <TitleTag className={`mt-3 text-lg font-semibold ${inProgress ? "text-text-muted" : "text-text-primary"}`}>
-        {title}
+        <FocusBlurResolve>{title}</FocusBlurResolve>
       </TitleTag>
       <p className="mt-2 flex-1 text-sm text-text-secondary">{issuer}</p>
     </motion.div>
@@ -307,16 +314,26 @@ export function ContactRowItem({
     </>
   );
 
-  const shell = "group flex items-center gap-4 rounded-xl border border-border bg-bg-surface px-5 py-4 transition-colors hover:border-accent/40";
+  // Static rows (no href, e.g. "Location") keep the plain bordered shell —
+  // a cursor-tracked glow only makes sense as a "this is clickable" signal.
+  const staticShell =
+    "group flex items-center gap-4 rounded-xl border border-border bg-bg-surface px-5 py-4 transition-colors hover:border-accent/40";
 
   return (
     <motion.div variants={fadeUp}>
       {href ? (
-        <a href={href} className={shell} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
-          {inner}
+        <a
+          href={href}
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel="noreferrer"
+          className="block rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <MagicCard className="rounded-xl" contentClassName="flex items-center gap-4 px-5 py-4">
+            {inner}
+          </MagicCard>
         </a>
       ) : (
-        <div className={shell}>{inner}</div>
+        <div className={staticShell}>{inner}</div>
       )}
     </motion.div>
   );

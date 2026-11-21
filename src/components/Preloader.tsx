@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { hero } from "../content";
+import { HyperText } from "./HyperText";
 import { useSmoothScroll } from "./SmoothScroll";
 
 // Split-reveal preloader, adapted from animata.design's "split-reveal"
@@ -86,12 +87,14 @@ export function Preloader() {
         style={{ opacity: contentHidden ? 0 : 1 }}
       >
         <div className="flex flex-col items-center gap-2">
-          <p
+          <HyperText
+            as="p"
+            duration={900}
             className="font-mono text-lg font-bold uppercase tracking-[3px] sm:text-2xl sm:tracking-[4px]"
             style={{ color: INK }}
           >
             {hero.name}
-          </p>
+          </HyperText>
           <p
             className="font-mono text-[11px] font-medium uppercase tracking-[3px]"
             style={{ color: "rgba(20, 21, 23, 0.45)" }}

@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { Project } from "../content";
 import { Icon } from "./Icon";
 import { EASE, StatusBadge, Tag } from "./ui";
+import { FocusBlurResolve } from "./FocusBlurResolve";
 import { useSmoothScroll } from "./SmoothScroll";
 
 type Ctx = { openProject: (p: Project) => void };
@@ -127,7 +128,7 @@ function ModalPanel({ project, onClose }: { project: Project; onClose: () => voi
       <div className="p-6 sm:p-8">
         <p className="text-xs font-semibold uppercase tracking-[1px] text-accent">{project.kind}</p>
         <h2 id="project-modal-title" className="mt-2 text-2xl font-bold text-text-primary sm:text-3xl">
-          {project.title}
+          <FocusBlurResolve triggerOnView={false}>{project.title}</FocusBlurResolve>
         </h2>
 
         {project.award ? (

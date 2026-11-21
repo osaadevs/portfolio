@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { experienceEducation as ee } from "../content";
 import type { TimelineItem } from "../content";
 import { EASE, Eyebrow, Reveal, Section, fadeUp, staggerContainer } from "./ui";
+import { FocusBlurResolve } from "./FocusBlurResolve";
 
 function isPresent(period: string) {
   return /present/i.test(period);
@@ -10,7 +11,9 @@ function isPresent(period: string) {
 function Timeline({ title, entries }: { title: string; entries: TimelineItem[] }) {
   return (
     <div>
-      <h3 className="text-xl font-bold text-text-primary">{title}</h3>
+      <h3 className="text-xl font-bold text-text-primary">
+        <FocusBlurResolve>{title}</FocusBlurResolve>
+      </h3>
 
       <motion.ol
         variants={staggerContainer(0.1)}
@@ -41,7 +44,9 @@ function Timeline({ title, entries }: { title: string; entries: TimelineItem[] }
             </span>
 
             <p className="text-xs font-semibold uppercase tracking-[1px] text-text-muted">{entry.period}</p>
-            <h4 className="mt-1.5 text-base font-semibold text-text-primary">{entry.role}</h4>
+            <h4 className="mt-1.5 text-base font-semibold text-text-primary">
+              <FocusBlurResolve>{entry.role}</FocusBlurResolve>
+            </h4>
             {entry.org ? <p className="mt-0.5 text-sm text-accent">{entry.org}</p> : null}
             {entry.note ? (
               <p className="mt-2 text-sm leading-relaxed text-text-secondary">{entry.note}</p>

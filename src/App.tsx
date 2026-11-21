@@ -1,30 +1,26 @@
 import { MotionConfig } from "framer-motion";
 import { Route, Routes } from "react-router-dom";
 import { About } from "./components/About";
-import { Certifications } from "./components/Certifications";
-import { Contact } from "./components/Contact";
-import { ExperienceEducation } from "./components/ExperienceEducation";
-import { Footer } from "./components/Footer";
-import { GridLines } from "./components/GridLines";
-import { Hero } from "./components/Hero";
-import { NavBar } from "./components/NavBar";
-import { Preloader } from "./components/Preloader";
 import { ProjectModalProvider } from "./components/ProjectModal";
-import { ProjectsPage } from "./components/ProjectsPage";
 import { SmoothScroll } from "./components/SmoothScroll";
-import { Skills } from "./components/Skills";
-import { Work } from "./components/Work";
+import { AllWork } from "./nib/AllWork";
+import { FeaturedWork } from "./nib/FeaturedWork";
+import { Finale } from "./nib/Finale";
+import { Hero } from "./nib/Hero";
+import { Inspect } from "./nib/Inspect";
+import { Loader } from "./nib/Loader";
+import { Nav } from "./nib/Nav";
+import { NibCursor } from "./nib/NibCursor";
+import { WorkIndex } from "./nib/WorkIndex";
 
 function Home() {
   return (
     <main>
       <Hero />
+      <FeaturedWork />
+      <WorkIndex />
+      {/* Legacy About, re-skinned by the palette tokens until phase 2 replaces it. */}
       <About />
-      <Skills />
-      <Work />
-      <ExperienceEducation />
-      <Certifications />
-      <Contact />
     </main>
   );
 }
@@ -34,17 +30,16 @@ function App() {
     <MotionConfig reducedMotion="user">
       <SmoothScroll>
         <ProjectModalProvider>
-          <Preloader />
-          {/* Fixed grid frame behind everything */}
-          <GridLines />
-          {/* Content sits above the grid */}
-          <div className="relative z-10">
-            <NavBar />
+          <div className="grain">
+            <Loader />
+            <Nav />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects" element={<AllWork />} />
             </Routes>
-            <Footer />
+            <Finale />
+            <Inspect />
+            <NibCursor />
           </div>
         </ProjectModalProvider>
       </SmoothScroll>
