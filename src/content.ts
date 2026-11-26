@@ -1,9 +1,6 @@
-// Final copy — from docs/Portfolio_Handoff_for_Claude_Code.md (v2). This is
-// the owner's own voice; do not rewrite it, do not add marketing language.
-// Structure/layout follows the Figma file; words come from the handoff doc.
-
-// Order matches the actual page flow (see Home() in App.tsx):
-// Hero -> About -> Skills -> Work -> Experience -> Certifications -> Contact.
+// Source content from docs/Portfolio_Handoff_for_Claude_Code.md, in the
+// owner's own voice. The site reads project write-ups, contact details and
+// social links from here; page copy lives in src/data.ts.
 export const nav = {
   logotype: "Osanda Senevirathna",
   links: [
@@ -95,7 +92,7 @@ export const work = {
         contribution: "Solo designer",
         liveLink: { label: "View on Facebook", href: "https://www.facebook.com/Inspirebuildingservices/" },
         showRepoLink: false,
-        image: "/projects/inspire-by-ipe.jpg",
+        image: "/covers/inspire-by-ipe.jpg",
       },
       {
         kind: "PHOTOGRAPHY & BRANDING",
@@ -105,7 +102,7 @@ export const work = {
         tags: ["Lightroom", "Photoshop", "Illustrator"],
         contribution: "Solo, photography and branding",
         showRepoLink: false,
-        image: "/projects/udara-antique.jpg",
+        image: "/covers/udara-antique.jpg",
       },
       {
         kind: "VISUAL IDENTITY",
@@ -115,7 +112,7 @@ export const work = {
         tags: ["Illustrator", "Photoshop"],
         contribution: "Lead designer, led the main design team",
         showRepoLink: false,
-        image: "/projects/hackx.jpg",
+        image: "/covers/hackx.jpg",
       },
     ] as Project[],
   },
@@ -136,7 +133,7 @@ export const work = {
           href: "https://www.figma.com/design/0zXudwQvJKGaOwwXKBODic/Duplicate-for-prototype?node-id=0-1",
         },
         showRepoLink: false,
-        image: "/projects/pixora.jpg",
+        image: "/covers/suwa-pahana.jpg",
       },
       {
         kind: "WEB BUILD",
@@ -148,7 +145,7 @@ export const work = {
         contribution: "Solo, design and build",
         liveLink: { label: "View live", href: "https://leisureland.lk" },
         showRepoLink: false,
-        image: "/projects/leisure-land.jpg",
+        image: "/covers/leisure-land.jpg",
       },
     ] as Project[],
   },
@@ -165,7 +162,7 @@ export const work = {
         contribution: "Group project",
         repoHref: "https://github.com/osaadevs/task-management-system",
         showRepoLink: true,
-        image: "/projects/taskora.jpg",
+        image: "/covers/taskora.jpg",
       },
       {
         kind: "JAVA / OOP",
@@ -176,7 +173,7 @@ export const work = {
         contribution: "Group project",
         repoHref: "https://github.com/osaadevs/OOP_Project",
         showRepoLink: true,
-        image: "/projects/pet-adoption-system.jpg",
+        image: "/covers/pet-adoption-system.jpg",
       },
       {
         kind: "FRONT END",
@@ -198,7 +195,7 @@ export const work = {
         contribution: "Solo",
         repoHref: "https://github.com/osaadevs/snake-game",
         showRepoLink: true,
-        image: "/projects/snake-game.jpg",
+        image: "/covers/snake-game.jpg",
       },
     ] as Project[],
   },

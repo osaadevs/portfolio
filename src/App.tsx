@@ -1,50 +1,62 @@
+import { lazy, Suspense, useEffect } from "react";
 import { MotionConfig } from "framer-motion";
-import { Route, Routes } from "react-router-dom";
-import { About } from "./components/About";
-import { ProjectModalProvider } from "./components/ProjectModal";
-import { SmoothScroll } from "./components/SmoothScroll";
-import { AllWork } from "./nib/AllWork";
-import { FeaturedWork } from "./nib/FeaturedWork";
-import { Finale } from "./nib/Finale";
-import { Hero } from "./nib/Hero";
-import { Inspect } from "./nib/Inspect";
-import { Loader } from "./nib/Loader";
-import { Nav } from "./nib/Nav";
-import { NibCursor } from "./nib/NibCursor";
-import { WorkIndex } from "./nib/WorkIndex";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { ScrollTrigger, startScroll } from "./lib";
+import { TransitionProvider } from "./router";
+import { Cursor } from "./ui/kit";
+import { Loader } from "./scenes/Loader";
+import { Nav } from "./scenes/Nav";
+import { Footer } from "./scenes/Footer";
+import Home from "./pages/Home";
 
-function Home() {
+// osa. Home is the short film (hero, introduction, selected work,
+// expertise); the full index, case studies and the story have their own
+// pages. Every page ends by lifting off the same footer.
+
+const WorkIndex = lazy(() => import("./pages/WorkIndex"));
+const CaseStudy = lazy(() => import("./pages/CaseStudy"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+
+function Pages() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const t = window.setTimeout(() => ScrollTrigger.refresh(), 120);
+    return () => window.clearTimeout(t);
+  }, [pathname]);
   return (
-    <main>
-      <Hero />
-      <FeaturedWork />
-      <WorkIndex />
-      {/* Legacy About, re-skinned by the palette tokens until phase 2 replaces it. */}
-      <About />
-    </main>
+    <Suspense fallback={<div className="h-[100svh] bg-night" />}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/work" element={<WorkIndex />} />
+        <Route path="/work/:slug" element={<CaseStudy />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
+    </Suspense>
   );
 }
 
-function App() {
+export default function App() {
+  useEffect(() => {
+    startScroll();
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
+  }, []);
+
   return (
     <MotionConfig reducedMotion="user">
-      <SmoothScroll>
-        <ProjectModalProvider>
-          <div className="grain">
-            <Loader />
-            <Nav />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/projects" element={<AllWork />} />
-            </Routes>
-            <Finale />
-            <Inspect />
-            <NibCursor />
-          </div>
-        </ProjectModalProvider>
-      </SmoothScroll>
+      <TransitionProvider>
+        <Loader />
+        <Nav />
+        {/* No background on main: each page paints its own and ends with a
+            rounded edge that lifts off the footer underneath. */}
+        <main className="relative z-10">
+          <Pages />
+        </main>
+        <Footer />
+        <Cursor />
+      </TransitionProvider>
     </MotionConfig>
   );
 }
-
-export default App;
