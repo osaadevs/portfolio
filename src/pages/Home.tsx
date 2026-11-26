@@ -1,4 +1,4 @@
-import { WORKS } from "../data";
+import { FEATURED, WORKS } from "../data";
 import { useGo } from "../router";
 import { Pill } from "../ui/kit";
 import { Hero } from "../scenes/Hero";
@@ -9,6 +9,28 @@ import { Expertise } from "../scenes/Expertise";
 // Home is curated, not exhaustive: who I am, four projects, what I offer,
 // then contact. The full index, case studies and story live on their own
 // pages.
+
+/** Announces the reel, so the first full-screen project never arrives
+ *  unannounced: the section title, how many, and how to move through it. */
+function WorkLead() {
+  return (
+    <section data-ink="#070b14" className="relative bg-paper text-night">
+      <div className="mx-auto flex max-w-[1500px] flex-col gap-6 px-5 pb-12 pt-6 md:flex-row md:items-end md:justify-between md:px-8 md:pb-16 md:pt-10">
+        <h2 className="display text-[clamp(2.6rem,7vw,7rem)]">Selected work</h2>
+        <p className="flex items-center gap-4 text-[15px] text-night/60 md:pb-4">
+          <span>
+            {String(FEATURED.length).padStart(2, "0")} projects. Scroll to move through them.
+          </span>
+          <span className="grid size-11 shrink-0 place-items-center rounded-full ring-1 ring-night/20" aria-hidden="true">
+            <svg viewBox="0 0 24 24" className="size-[18px] animate-[nudge_1.8s_ease-in-out_infinite] motion-reduce:animate-none" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 5v14M6 13l6 6 6-6" />
+            </svg>
+          </span>
+        </p>
+      </div>
+    </section>
+  );
+}
 
 /** A quiet way from the reel to the full index: one line and one button,
  *  so the expertise heading below stays the only loud thing in view. */
@@ -33,6 +55,7 @@ export default function Home() {
     <>
       <Hero />
       <Intro />
+      <WorkLead />
       <Reel />
       <AllWork />
       <Expertise />

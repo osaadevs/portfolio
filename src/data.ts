@@ -162,7 +162,7 @@ export const WORKS: Work[] = [
 export const workBySlug = (slug?: string) => WORKS.find((w) => w.slug === slug);
 
 /** Home shows the strongest four; everything lives on /work. */
-export const FEATURED = ["suwa-pahana", "leisure-land", "onesphere", "hackx"].map((s) => workBySlug(s)!);
+export const FEATURED = ["ithuru", "leisure-land", "onesphere", "hackx"].map((s) => workBySlug(s)!);
 
 export const CATEGORIES: ("All" | Category)[] = ["All", "UI/UX", "Branding", "Web", "Photography"];
 
@@ -192,7 +192,8 @@ export const EXPERTISE = [
     body: "Apps and websites designed around how people actually use them, from research and user flows through to prototypes and production-ready UI.",
     items: ["User research and personas", "User flows and wireframes", "Interactive prototypes", "UI design and design systems"],
     tools: "Figma, Framer",
-    img: "/covers/suwa-pahana.jpg",
+    // The black OneSphere cover: neutral, so the cobalt card stays the colour.
+    img: "/covers/onesphere-dark.jpg",
     bg: "#0036ea",
     ink: DARK,
   },

@@ -11,7 +11,7 @@ import { Pill } from "../ui/kit";
 
 function Title({ text }: { text: string }) {
   return (
-    <h3 className="display text-[clamp(2.6rem,5.6vw,6.4rem)]">
+    <h3 className="display text-[clamp(2.2rem,11.5cqw,6rem)]">
       {text.split(" ").map((w, wi) => (
         <span key={wi} className="line-mask mr-[0.2em] inline-block last:mr-0">
           <span className="inline-block whitespace-nowrap">
@@ -70,8 +70,9 @@ function Scene({ w, i }: { w: Work; i: number }) {
           </div>
         </div>
 
-        {/* Words */}
-        <div className="relative flex flex-col md:order-1 md:col-span-5 md:h-full md:justify-between md:py-4">
+        {/* Words. A size container, so titles scale to fit this column and
+            never run under the collage. */}
+        <div className="@container relative flex flex-col md:order-1 md:col-span-5 md:h-full md:justify-between md:py-4">
           <p className="hidden items-baseline gap-3 md:flex">
             <span className="display text-[clamp(1.4rem,2.4vw,2.2rem)] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
             <span className="text-sm opacity-60">of {String(REEL.length).padStart(2, "0")}</span>

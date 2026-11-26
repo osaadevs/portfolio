@@ -83,6 +83,16 @@ button:focus-visible {
   }
 }
 
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
 @keyframes marquee {
   to {
     transform: translateX(-50%);

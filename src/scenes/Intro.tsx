@@ -68,9 +68,9 @@ export function Intro() {
           </Pill>
         </div>
 
-        <dl data-stats className="mt-16 grid grid-cols-3 border-t border-night/15 md:mt-24">
-          {INTRO.stats.map((s, i) => (
-            <div key={s.label} data-stat className={`pt-8 md:pt-10 ${i > 0 ? "border-l border-night/15 pl-4 md:pl-10" : "pr-4"}`}>
+        <dl data-stats className="mt-16 grid grid-cols-3 gap-4 md:mt-24 md:gap-10">
+          {INTRO.stats.map((s) => (
+            <div key={s.label} data-stat className="border-t border-night/15 pt-6 md:pt-8">
               <dt className="display text-[clamp(2.6rem,6vw,5.6rem)] leading-none text-signal">{s.value}</dt>
               <dd className="mt-3 max-w-[18ch] text-sm leading-snug text-night/65 md:text-[15px]">{s.label}</dd>
             </div>

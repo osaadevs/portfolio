@@ -84,11 +84,11 @@ export default function AboutPage() {
         </div>
 
         {/* Story */}
-        <div className="mt-20 grid gap-8 border-t border-night/15 pt-10 md:mt-28 md:grid-cols-12">
+        <div className="mt-20 grid gap-y-8 border-t border-night/15 pt-10 md:mt-28 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-4">
             <Heading>Story</Heading>
           </div>
-          <div className="space-y-5 text-lg leading-relaxed text-night/80 md:col-span-7 md:col-start-6">
+          <div className="max-w-[68ch] space-y-5 text-lg leading-relaxed text-night/80 md:col-span-7 md:col-start-6">
             {ABOUT.bio.map((p) => (
               <p key={p.slice(0, 24)} data-row>
                 {p}
@@ -111,22 +111,22 @@ export default function AboutPage() {
         </div>
 
         {/* Experience: a timeline that fills as you scroll */}
-        <div className="mt-20 grid gap-10 border-t border-night/15 pt-10 md:mt-28 md:grid-cols-12">
+        <div className="mt-20 grid gap-y-8 border-t border-night/15 pt-10 md:mt-28 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-4">
             <div className="md:sticky md:top-28">
               <Heading>Experience</Heading>
               <p className="mt-4 max-w-[30ch] text-[15px] text-night/60">Studio, agency, freelance and university media work, most recent first.</p>
             </div>
           </div>
-          <ol data-timeline className="relative md:col-span-8 md:col-start-5">
-            <span aria-hidden="true" className="absolute bottom-3 left-[7px] top-3 w-[2px] bg-night/10">
+          <ol data-timeline className="relative md:col-span-7 md:col-start-6">
+            <span aria-hidden="true" className="absolute bottom-3 left-[7px] top-3 w-[2px] bg-night/10 md:-left-[21px]">
               <span data-line className="block size-full origin-top bg-signal" />
             </span>
             {EXPERIENCE.map((r) => (
-              <li key={r.role + r.org} data-entry className="group/e relative pb-14 pl-10 last:pb-0 md:pl-14">
+              <li key={r.role + r.org} data-entry className="group/e relative pb-14 pl-10 last:pb-0 md:pl-0">
                 <span
                   aria-hidden="true"
-                  className="absolute left-0 top-1 size-4 rounded-full border-2 border-night/25 bg-paper transition-[background-color,border-color,transform] duration-500 group-[.is-on]/e:scale-110 group-[.is-on]/e:border-signal group-[.is-on]/e:bg-signal"
+                  className="absolute left-0 top-1 size-4 rounded-full md:-left-[28px] border-2 border-night/25 bg-paper transition-[background-color,border-color,transform] duration-500 group-[.is-on]/e:scale-110 group-[.is-on]/e:border-signal group-[.is-on]/e:bg-signal"
                 />
                 <p className="text-sm font-semibold tabular-nums text-signal">{r.period}</p>
                 <p className="display mt-2 text-[clamp(1.4rem,2.6vw,2.3rem)] leading-tight">{r.role}</p>
@@ -140,7 +140,7 @@ export default function AboutPage() {
         {/* Recognition */}
         <div className="mt-20 border-t border-night/15 pt-10 md:mt-28">
           <Heading>Recognition</Heading>
-          <div className="mt-10 grid gap-10 md:grid-cols-12">
+          <div className="mt-10 grid gap-y-8 md:grid-cols-12 md:gap-x-10">
             <ul className="text-[15px] md:col-span-4">
               {RECOGNITION.map((a) => (
                 <li key={a.name} className="flex items-baseline justify-between gap-4 border-b border-night/10 py-4 first:pt-0">
@@ -154,7 +154,7 @@ export default function AboutPage() {
                 </li>
               ))}
             </ul>
-            <div data-board className="relative h-[440px] overflow-hidden rounded-[28px] bg-paper-2 md:col-span-8 md:h-[460px]">
+            <div data-board className="relative h-[440px] overflow-hidden rounded-[28px] bg-paper-2 md:col-span-7 md:col-start-6 md:h-[460px]">
               <p className="absolute bottom-4 left-5 text-xs text-night/45">Drag to rearrange</p>
               {RECOGNITION.map((a, i) => {
                 const st = STICKERS[i % STICKERS.length];
@@ -178,11 +178,11 @@ export default function AboutPage() {
         </div>
 
         {/* Education, learning, tools */}
-        <div className="mt-20 grid gap-12 border-t border-night/15 pt-10 md:mt-28 md:grid-cols-12">
+        <div className="mt-20 grid gap-y-8 border-t border-night/15 pt-10 md:mt-28 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-4">
             <Heading>Education</Heading>
           </div>
-          <div className="grid gap-10 sm:grid-cols-2 md:col-span-8 md:col-start-5">
+          <div className="grid gap-10 sm:grid-cols-2 md:col-span-7 md:col-start-6">
             <div>
               <p className="text-sm text-night/55">Degree and school</p>
               <ul className="mt-4 space-y-4">
