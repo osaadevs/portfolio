@@ -61,7 +61,7 @@ export default function WorkIndex() {
 
   return (
     <section ref={root} data-ink="#eef1f6" className="relative min-h-[100svh] rounded-b-[40px] bg-night pb-28 pt-28 text-paper md:rounded-b-[64px] md:pt-36">
-      <div className="mx-auto max-w-[1500px] px-5 md:px-8">
+      <div className="frame">
         <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <h1 className="display text-[clamp(3.4rem,13vw,13rem)] md:col-span-8">
             <span className="line-mask">

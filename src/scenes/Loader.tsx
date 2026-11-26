@@ -139,7 +139,7 @@ export function Loader() {
           </g>
         </g>
       </svg>
-      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between overflow-hidden px-5 pb-4 sm:px-8 sm:pb-6">
+      <div className="frame absolute inset-x-0 bottom-0 flex items-end justify-between overflow-hidden pb-4 sm:pb-6">
         <p data-loader-chrome className="pb-2 text-sm leading-snug text-mist">
           <span className="block text-paper">Osanda Senevirathna</span>
           Designer and developer

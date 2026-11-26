@@ -90,7 +90,7 @@ export function Footer() {
 
   return (
     <footer ref={root} id="contact" data-ink="#eef1f6" className="bottom-0 z-0 overflow-hidden bg-[#0b1636] text-paper">
-      <div data-inner className="mx-auto max-w-[1500px] px-5 pt-24 sm:px-8 sm:pt-20">
+      <div data-inner className="frame pt-24 sm:pt-20">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
             <h2 className="display text-[clamp(2.8rem,8vw,7.5rem)]">
@@ -162,7 +162,7 @@ export function Footer() {
       </div>
 
       {/* Small print sits above the wordmark, so the mark stays clean. */}
-      <div className="mx-auto mt-12 flex max-w-[1500px] items-center justify-between gap-4 border-t border-paper/10 px-5 pt-5 text-xs text-paper/50 sm:px-8">
+      <div className="frame mt-12 flex items-center justify-between gap-4 border-t border-paper/10 pt-5 text-xs text-paper/50">
         <span>{footer.copyright}</span>
         <span className="group inline-flex items-center gap-1.5">
           Designed with

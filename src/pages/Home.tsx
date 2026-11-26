@@ -15,7 +15,7 @@ import { Expertise } from "../scenes/Expertise";
 function WorkLead() {
   return (
     <section data-ink="#070b14" className="relative bg-paper text-night">
-      <div className="mx-auto flex max-w-[1500px] flex-col gap-6 px-5 pb-12 pt-6 md:flex-row md:items-end md:justify-between md:px-8 md:pb-16 md:pt-10">
+      <div className="frame flex flex-col gap-6 pb-12 pt-6 md:flex-row md:items-end md:justify-between md:pb-16 md:pt-10">
         <h2 className="display text-[clamp(2.6rem,7vw,7rem)]">Selected work</h2>
         <p className="flex items-center gap-4 text-[15px] text-night/60 md:pb-4">
           <span>
@@ -38,7 +38,7 @@ function AllWork() {
   const go = useGo();
   return (
     <section data-ink="#eef1f6" className="relative bg-night text-paper">
-      <div className="mx-auto flex max-w-[1500px] flex-col gap-6 border-b border-paper/12 px-5 py-14 md:flex-row md:items-center md:justify-between md:px-8 md:py-16">
+      <div className="frame flex flex-col gap-6 border-b border-paper/12 py-14 md:flex-row md:items-center md:justify-between md:py-16">
         <p className="max-w-[46ch] text-lg leading-relaxed text-paper/70">
           These are four of {WORKS.length} projects. The full index covers UI/UX, branding, web and photography.
         </p>

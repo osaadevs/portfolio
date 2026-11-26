@@ -61,7 +61,7 @@ export default function AboutPage() {
 
   return (
     <div ref={root} data-ink="#070b14" className="relative rounded-b-[40px] bg-paper text-night md:rounded-b-[64px]">
-      <div className="mx-auto max-w-[1500px] px-5 pb-24 pt-28 md:px-8 md:pt-36">
+      <div className="frame pb-24 pt-28 md:pt-36">
         {/* Intro */}
         <div className="grid gap-10 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">

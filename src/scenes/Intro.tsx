@@ -37,7 +37,7 @@ export function Intro() {
 
   return (
     <section ref={root} id="intro" data-ink="#070b14" className="relative z-10 rounded-t-[40px] bg-paper text-night md:rounded-t-[64px]">
-      <div className="mx-auto max-w-[1500px] px-5 pb-16 pt-16 md:px-8 md:pb-20 md:pt-24">
+      <div className="frame pb-16 pt-16 md:pb-20 md:pt-24">
         <p data-statement className="display max-w-[26ch] text-[clamp(1.6rem,3.6vw,3.8rem)] font-bold leading-[1.12] tracking-[-0.03em]">
           {first.split(" ").map((w, i) =>
             w ? (
@@ -81,7 +81,7 @@ export function Intro() {
       {/* Clients: a slow strip that pauses on hover. Names for now; each
           item can become a logo without touching the layout. */}
       <div className="border-t border-night/10 pb-16 pt-10 md:pb-24">
-        <p className="mx-auto max-w-[1500px] px-5 text-sm text-night/55 md:px-8">Worked with</p>
+        <p className="frame text-sm text-night/55">Worked with</p>
         <div
           className="group mt-6 overflow-hidden"
           style={{ maskImage: "linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)" }}

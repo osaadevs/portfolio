@@ -92,7 +92,7 @@ export function Nav() {
     <>
       <header
         ref={header}
-        className={`pointer-events-none fixed inset-x-0 top-0 z-[120] flex items-center justify-between px-5 py-5 text-paper transition-[color,translate] duration-500 ease-[cubic-bezier(.16,1,.3,1)] sm:px-8 ${hidden ? "-translate-y-full" : ""}`}
+        className={`pointer-events-none frame fixed inset-x-0 top-0 z-[120] flex items-center justify-between py-5 text-paper transition-[color,translate] duration-500 ease-[cubic-bezier(.16,1,.3,1)] ${hidden ? "-translate-y-full" : ""}`}
       >
         <button type="button" onClick={() => go("/")} className="pointer-events-auto" aria-label="osa, home" data-cursor="Home">
           <Osa className="h-7 w-auto sm:h-8" />
@@ -121,7 +121,7 @@ export function Nav() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[130] flex flex-col bg-signal px-5 pb-8 pt-5 text-paper sm:px-8"
+            className="fixed inset-0 z-[130] flex flex-col bg-signal px-5 pb-8 pt-5 text-paper md:px-8"
             initial={{ clipPath: "inset(0 0 100% 0 round 0 0 40px 40px)" }}
             animate={{ clipPath: "inset(0 0 0% 0 round 0 0 0px 0px)" }}
             exit={{ clipPath: "inset(0 0 100% 0 round 0 0 40px 40px)" }}

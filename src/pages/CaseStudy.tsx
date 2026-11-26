@@ -49,7 +49,7 @@ export default function CaseStudy() {
   return (
     <div ref={root} key={slug}>
       <header data-ink={w.ink} className="relative z-10" style={{ background: w.bg, color: w.ink }}>
-        <div className="mx-auto max-w-[1500px] px-5 pb-14 pt-28 md:px-8 md:pb-20 md:pt-36">
+        <div className="frame pb-14 pt-28 md:pb-20 md:pt-36">
           <div data-fade className="flex items-center justify-between text-sm">
             <TLink to="/work" className="font-semibold opacity-80 hover:opacity-100" data-cursor="Back">
               ← All work
@@ -82,7 +82,7 @@ export default function CaseStudy() {
       </header>
 
       <div style={{ background: `linear-gradient(to bottom, ${w.bg} 50%, #eef1f6 50%)` }}>
-        <div className="mx-auto max-w-[1500px] px-5 md:px-8">
+        <div className="frame">
           <div data-cover className="aspect-[16/9] overflow-hidden rounded-[24px] md:rounded-[40px]">
             <img src={w.img} alt={`${w.name} cover`} className="size-full object-cover" />
           </div>
@@ -90,7 +90,7 @@ export default function CaseStudy() {
       </div>
 
       <section data-ink="#070b14" className="bg-paper text-night">
-        <div className="mx-auto max-w-[1500px] px-5 py-20 md:px-8 md:py-28">
+        <div className="frame py-20 md:py-28">
           <div className="grid gap-8 md:grid-cols-12">
             <h2 className="display text-[clamp(1.8rem,3.4vw,3rem)] md:col-span-4">Overview</h2>
             <div className="md:col-span-7 md:col-start-6">
@@ -139,7 +139,7 @@ export default function CaseStudy() {
           className="group block overflow-hidden rounded-b-[40px] rounded-t-[40px] md:rounded-b-[64px] md:rounded-t-[64px]"
           style={{ background: next.bg, color: next.ink }}
         >
-          <div className="mx-auto grid max-w-[1500px] items-center gap-8 px-5 py-16 md:grid-cols-12 md:px-8 md:py-24">
+          <div className="frame grid items-center gap-8 py-16 md:grid-cols-12 md:py-24">
             <div className="md:col-span-7">
               <p className="text-sm opacity-70">Next project</p>
               <p className="display mt-4 text-[clamp(2.6rem,8vw,8rem)] transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-3">

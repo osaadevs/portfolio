@@ -32,7 +32,7 @@ export function Expertise() {
 
   return (
     <section ref={root} id="expertise" data-ink="#eef1f6" className="relative rounded-b-[40px] bg-night pb-24 pt-20 text-paper md:rounded-b-[64px] md:pt-28">
-      <div className="mx-auto max-w-[1500px] px-5 md:px-8">
+      <div className="frame">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <h2 className="display text-[clamp(2.6rem,7vw,7rem)]">Expertise</h2>
           <p className="max-w-[38ch] text-paper/65 md:pb-3 md:text-right">

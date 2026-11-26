@@ -40,7 +40,7 @@ function Scene({ w, i }: { w: Work; i: number }) {
     >
       <div
         data-content
-        className="relative mx-auto flex h-full max-w-[1500px] flex-col justify-center gap-8 px-5 pb-16 pt-24 md:grid md:grid-cols-12 md:items-center md:gap-10 md:px-8 md:pb-20"
+        className="frame relative flex h-full flex-col justify-center gap-8 pb-16 pt-24 md:grid md:grid-cols-12 md:items-center md:gap-10 md:pb-20"
       >
         {/* Collage */}
         <div className="relative md:order-2 md:col-span-7">
@@ -174,7 +174,7 @@ export function Reel() {
           <Scene key={w.slug} w={w} i={i} />
         ))}
         {!REDUCED && (
-          <div className="pointer-events-none absolute inset-x-5 bottom-6 z-50 flex gap-1.5 md:inset-x-8 md:bottom-8" aria-hidden="true">
+          <div className="frame pointer-events-none absolute inset-x-0 bottom-6 z-50 flex gap-1.5 md:bottom-8" aria-hidden="true">
             {REEL.map((w) => (
               <span key={w.name} className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/25 mix-blend-difference">
                 <span data-bar className="block h-full origin-left scale-x-0 bg-white" />

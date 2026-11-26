@@ -153,7 +153,7 @@ export function Hero() {
         <GridField />
       </div>
 
-      <div data-sink className="relative z-10 flex h-full origin-top flex-col px-5 pb-6 pt-24 sm:px-8 sm:pb-8 sm:pt-28">
+      <div data-sink className="frame relative z-10 flex h-full origin-top flex-col pb-6 pt-24 sm:pb-8 sm:pt-28">
         <div className="flex items-start justify-between gap-6 text-sm leading-snug sm:text-[15px]">
           <p data-fade>
             <span className="block font-semibold">{HERO.name}</span>
@@ -164,7 +164,7 @@ export function Hero() {
           </p>
         </div>
 
-        <h1 className="display mt-auto text-[clamp(2.4rem,10.4vw,13rem)] leading-[0.9]">
+        <h1 className="display mt-auto text-[clamp(2.4rem,10.4vw,10.6rem)] leading-[0.9]">
           <span className="sr-only">Osanda Senevirathna, interface and brand designer.</span>
           <span aria-hidden="true">
             <Line i={0}>

@@ -20,6 +20,18 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* The page frame: one centred column with the same side margin on every
+   section, so the hero, nav, scenes and footer all line up. */
+@utility frame {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1500px;
+  padding-inline: 1.25rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+}
+
 html {
   background: var(--color-night);
   overflow-x: clip;
